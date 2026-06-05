@@ -2,6 +2,8 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Footer from './components/Footer'
 import AboutSnippet from './components/AboutSnippet'
+import ServicesPreview from './components/ServicesPreview'
+import TestimonialsCarousel from './components/TestimonialsCarousel'
 
 function App() {
   return (
@@ -9,6 +11,8 @@ function App() {
       <Navbar />
       <Hero />
       <AboutSnippet /> 
+      <ServicesPreview /> 
+      <TestimonialsCarousel />
 
 
       <Footer /> 
