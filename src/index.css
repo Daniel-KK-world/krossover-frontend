@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Set Poppins as the default body font */
+body {
+  font-family: 'Poppins', sans-serif; 
+}
+
+@theme {
+  /* Your Brand Colors */
+  --color-krossover-blue: #1F628D;
+  --color-krossover-orange: #FF914C;
+
+  /* The Bus Driving Animation */
+  --animate-drive-in: driveIn 1.5s ease-out forwards;
+  
+  @keyframes driveIn {
+    0% { transform: translateX(100vw); opacity: 0; }
+    80% { transform: translateX(-10px); opacity: 1; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+}
