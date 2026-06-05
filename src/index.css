@@ -1,5 +1,8 @@
-@import "tailwindcss";
+/* 1. Google Fonts MUST be the absolute first line */
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* 2. Tailwind import comes second */
+@import "tailwindcss";
 
 /* Set Poppins as the default body font */
 body {
