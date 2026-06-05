@@ -37,7 +37,7 @@ const ServicesPreview = () => {
       id: 6,
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
-      image: "https://images.unsplash.com/photo-1605342417770-49658db4f4a3?q=80&w=2070&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop",
     }
   ];
 

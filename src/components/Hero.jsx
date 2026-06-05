@@ -5,7 +5,7 @@ const Hero = () => {
     <section 
       /* Applied the viewport-fit fixes: reduced py-20 to py-10, changed min-h-[80vh] to h-[calc(100vh-90px)] */
       className="relative overflow-hidden flex flex-col md:flex-row items-center justify-between px-8 py-10 h-[calc(100vh-90px)] bg-cover bg-center"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop')" }}
+      style={{ backgroundImage: "url(https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop)" }}
     >
       
       {/* UPDATE 1: Swapped the white overlay for a dark slate/black overlay for high contrast */}
@@ -38,7 +38,7 @@ const Hero = () => {
       <div className="md:w-1/2 mt-8 md:mt-0 relative w-full h-[300px] md:h-[450px] z-10">
         <div className="absolute inset-0 animate-drive-in flex items-center justify-center">
           <img 
-            src="https://pngimg.com/uploads/bus/bus_PNG8625.png" 
+            src="src/assets/krossoverbus.png" 
             alt="Krossover Bus" 
             className="w-full max-w-lg object-contain drop-shadow-2xl"
           />
