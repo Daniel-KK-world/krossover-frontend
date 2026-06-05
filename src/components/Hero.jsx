@@ -25,10 +25,10 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 font-poppins">
-          <a href="/bookings" className="bg-krossover-orange hover:opacity-90 text-white text-lg px-8 py-3 rounded-md font-semibold shadow-lg transition text-center flex items-center justify-center">
+          <a href="/bookings" className="bg-krossover-orange hover:bg-krossover-blue text-white text-lg px-8 py-3 rounded-md font-semibold shadow-lg transition text-center flex items-center justify-center">
             Book a Service
           </a>
-          <a href="/services" className="bg-white hover:bg-gray-100 text-krossover-blue text-lg px-8 py-3 rounded-md font-semibold shadow-sm transition text-center flex items-center justify-center border border-transparent">
+          <a href="/services" className="bg-krossover-blue hover:bg-krossover-orange text-white text-lg px-8 py-3 rounded-md font-semibold shadow-sm transition text-center flex items-center justify-center border border-transparent">
             Explore Fleet
           </a>
         </div>
