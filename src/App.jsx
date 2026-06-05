@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import AboutSnippet from './components/AboutSnippet'
 import ServicesPreview from './components/ServicesPreview'
 import TestimonialsCarousel from './components/TestimonialsCarousel'
+import CTASection from './components/CTASection'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <AboutSnippet /> 
       <ServicesPreview /> 
       <TestimonialsCarousel />
+      <CTASection /> 
 
 
       <Footer /> 
