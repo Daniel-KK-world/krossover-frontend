@@ -1,4 +1,6 @@
 import React from 'react';
+// 1. Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -19,15 +21,15 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Column 2: Quick Links */}
+        {/* Column 2: Quick Links - Updated to use React Router <Link> */}
         <div>
           <h3 className="font-anton text-xl mb-4 text-[#FF914C] tracking-wide">QUICK LINKS</h3>
           <ul className="space-y-3 text-sm text-gray-200">
-            <li><a href="/" className="hover:text-white hover:underline transition">Home</a></li>
-            <li><a href="/about" className="hover:text-white hover:underline transition">About Us</a></li>
-            <li><a href="/services" className="hover:text-white hover:underline transition">Explore Fleet & Services</a></li>
-            <li><a href="/book" className="hover:text-white hover:underline transition">Book a Service</a></li>
-            <li><a href="/auth" className="hover:text-white hover:underline transition">Client Portal Login</a></li>
+            <li><Link to="/" className="hover:text-white hover:underline transition">Home</Link></li>
+            <li><Link to="/about" className="hover:text-white hover:underline transition">About Us</Link></li>
+            <li><Link to="/services" className="hover:text-white hover:underline transition">Explore Fleet & Services</Link></li>
+            <li><Link to="/book" className="hover:text-white hover:underline transition">Book a Service</Link></li>
+            <li><Link to="/auth" className="hover:text-white hover:underline transition">Client Portal Login</Link></li>
           </ul>
         </div>
 
@@ -69,12 +71,12 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-blue-800 flex flex-col md:flex-row items-center justify-between text-xs text-gray-300">
         <p>&copy; {new Date().getFullYear()} Krossover Transport Agency. All Rights Reserved.</p>
         
-        {/* Social Media Placeholders */}
+        {/* Social Media Placeholders - Kept as standard <a> tags because they are external links */}
         <div className="flex gap-4 mt-4 md:mt-0">
-          <a href="#" className="hover:text-[#FF914C] transition">Facebook</a>
-          <a href="#" className="hover:text-[#FF914C] transition">Instagram</a>
-          <a href="#" className="hover:text-[#FF914C] transition">TikTok</a>
-          <a href="#" className="hover:text-[#FF914C] transition">YouTube</a>
+          <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">YouTube</a>
         </div>
       </div>
     </footer>

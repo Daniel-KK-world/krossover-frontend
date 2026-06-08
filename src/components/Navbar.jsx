@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// 1. Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   // State to manage the mobile menu toggle
@@ -29,8 +31,8 @@ const Navbar = () => {
       {/* 3. Main Navigation */}
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 bg-white">
         
-        {/* Brand Logo Area - Now a clickable link to Home */}
-        <a href="/" className="flex flex-col items-start cursor-pointer hover:opacity-90 transition">
+        {/* Brand Logo Area - Now using Link */}
+        <Link to="/" className="flex flex-col items-start cursor-pointer hover:opacity-90 transition">
           <div className="leading-none">
             <span className="text-3xl font-anton text-krossover-blue tracking-wide">KROSSOVER</span>
           </div>
@@ -40,20 +42,21 @@ const Navbar = () => {
           <div className="bg-krossover-blue text-white text-[9px] italic px-2.5 py-0.5 rounded-full font-poppins">
             Your Safety and Comfort, Our Style
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Links and Auth Wrapper */}
         <div className="hidden lg:flex items-center space-x-10">
           <ul className="flex space-x-8 text-gray-700 font-poppins font-semibold text-sm">
-            <li className="hover:text-krossover-orange transition cursor-pointer"><a href="/">Home</a></li>
-            <li className="hover:text-krossover-orange transition cursor-pointer"><a href="/about">About Us</a></li>
-            <li className="hover:text-krossover-orange transition cursor-pointer"><a href="/services">Our Services</a></li>
-            <li className="hover:text-krossover-orange transition cursor-pointer"><a href="/bookings">My Bookings</a></li>
+            {/* Swapped a tags for Link components */}
+            <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/">Home</Link></li>
+            <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/about">About Us</Link></li>
+            <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/services">Our Services</Link></li>
+            <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/bookings">My Bookings</Link></li>
           </ul>
 
           <div className="flex space-x-4 items-center font-poppins border-l-2 border-gray-200 pl-6">
-            <a href="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange transition">Log In</a>
-            <a href="/register" className="bg-krossover-orange hover:bg-[#e07b38] text-white text-sm px-5 py-1.5 rounded-md font-semibold transition shadow-sm">Register</a>
+            <Link to="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange transition">Log In</Link>
+            <Link to="/register" className="bg-krossover-orange hover:bg-[#e07b38] text-white text-sm px-5 py-1.5 rounded-md font-semibold transition shadow-sm">Register</Link>
           </div>
         </div>
 
@@ -65,10 +68,8 @@ const Navbar = () => {
         >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             {isOpen ? (
-              // X icon when open
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             ) : (
-              // Hamburger icon when closed
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             )}
           </svg>
@@ -80,26 +81,26 @@ const Navbar = () => {
         <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 z-50">
           <ul className="flex flex-col text-gray-700 font-poppins font-semibold text-base">
             <li className="border-b border-gray-50">
-              <a href="/" className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Home</a>
+              <Link to="/" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Home</Link>
             </li>
             <li className="border-b border-gray-50">
-              <a href="/about" className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">About Us</a>
+              <Link to="/about" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">About Us</Link>
             </li>
             <li className="border-b border-gray-50">
-              <a href="/services" className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Our Services</a>
+              <Link to="/services" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Our Services</Link>
             </li>
             <li className="border-b border-gray-50">
-              <a href="/bookings" className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">My Bookings</a>
+              <Link to="/bookings" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">My Bookings</Link>
             </li>
             
             {/* Mobile Auth Buttons */}
             <li className="px-8 py-6 bg-gray-50 flex flex-col space-y-4">
-              <a href="/login" className="w-full text-center text-krossover-blue border-2 border-krossover-blue text-sm font-bold py-2.5 rounded-md hover:bg-krossover-blue hover:text-white transition">
+              <Link to="/login" onClick={toggleMenu} className="w-full text-center text-krossover-blue border-2 border-krossover-blue text-sm font-bold py-2.5 rounded-md hover:bg-krossover-blue hover:text-white transition">
                 Log In
-              </a>
-              <a href="/register" className="w-full text-center bg-krossover-orange hover:bg-[#e07b38] text-white text-sm py-2.5 rounded-md font-semibold transition shadow-sm">
+              </Link>
+              <Link to="/register" onClick={toggleMenu} className="w-full text-center bg-krossover-orange hover:bg-[#e07b38] text-white text-sm py-2.5 rounded-md font-semibold transition shadow-sm">
                 Register
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
