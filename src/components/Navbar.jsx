@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-// 1. Import Link from react-router-dom
 import { Link } from 'react-router-dom';
+// Notice: The broken import line is completely gone!
 
 const Navbar = () => {
-  // State to manage the mobile menu toggle
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -16,7 +15,7 @@ const Navbar = () => {
       {/* 1. Top Orange Line */}
       <div className="h-1.5 w-full bg-krossover-orange"></div>
 
-      {/* 2. Contact Info Bar - Hidden on mobile, visible on medium+ screens */}
+      {/* 2. Contact Info Bar */}
       <div className="hidden md:flex justify-end items-center bg-krossover-blue text-white py-1 px-8 font-poppins text-xs space-x-8">
         <div className="flex items-center space-x-2">
           <span className="text-krossover-orange">✉</span>
@@ -31,23 +30,18 @@ const Navbar = () => {
       {/* 3. Main Navigation */}
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 bg-white">
         
-        {/* Brand Logo Area - Now using Link */}
-        <Link to="/" className="flex flex-col items-start cursor-pointer hover:opacity-90 transition">
-          <div className="leading-none">
-            <span className="text-3xl font-anton text-krossover-blue tracking-wide">KROSSOVER</span>
-          </div>
-          <span className="text-[10px] font-poppins text-krossover-orange font-extrabold tracking-widest uppercase leading-tight mb-0.5">
-            Transport Agency
-          </span>
-          <div className="bg-krossover-blue text-white text-[9px] italic px-2.5 py-0.5 rounded-full font-poppins">
-            Your Safety and Comfort, Our Style
-          </div>
+        {/* Clickable logo graphic container referencing the public folder directly */}
+        <Link to="/" className="flex items-center cursor-pointer hover:opacity-90 transition">
+          <img 
+            src="src/assets/logo.png" 
+            alt="Krossover Transport Agency Logo" 
+            className="h-12 md:h-14 w-auto object-contain py-0.5" 
+          />
         </Link>
 
         {/* Desktop Links and Auth Wrapper */}
         <div className="hidden lg:flex items-center space-x-10">
           <ul className="flex space-x-8 text-gray-700 font-poppins font-semibold text-sm">
-            {/* Swapped a tags for Link components */}
             <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/">Home</Link></li>
             <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/about">About Us</Link></li>
             <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/services">Our Services</Link></li>
