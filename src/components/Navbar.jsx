@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-// Notice: The broken import line is completely gone!
+import React, { useState, useEffect } from 'react'; // 1. Added useEffect
+import { Link, useNavigate } from 'react-router-dom'; // 2. Added useNavigate
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 3. State to track login
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  // 4. Check for token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []); 
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // 5. Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/'); 
   };
 
   return (
@@ -30,7 +42,6 @@ const Navbar = () => {
       {/* 3. Main Navigation */}
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 bg-white">
         
-        {/* Clickable logo graphic container referencing the public folder directly */}
         <Link to="/" className="flex items-center cursor-pointer hover:opacity-90 transition">
           <img 
             src="src/assets/logo.png" 
@@ -48,9 +59,18 @@ const Navbar = () => {
             <li className="hover:text-krossover-orange transition cursor-pointer"><Link to="/bookings">My Bookings</Link></li>
           </ul>
 
+          {/* 6. CONDITIONAL RENDERING for Auth Buttons */}
           <div className="flex space-x-4 items-center font-poppins border-l-2 border-gray-200 pl-6">
-            <Link to="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange transition">Log In</Link>
-            <Link to="/register" className="bg-krossover-orange hover:bg-[#e07b38] text-white text-sm px-5 py-1.5 rounded-md font-semibold transition shadow-sm">Register</Link>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className="text-krossover-blue text-sm font-bold hover:text-red-600 transition">
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange transition">Log In</Link>
+                <Link to="/register" className="bg-krossover-orange hover:bg-[#e07b38] text-white text-sm px-5 py-1.5 rounded-md font-semibold transition shadow-sm">Register</Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -74,27 +94,24 @@ const Navbar = () => {
       {isOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 z-50">
           <ul className="flex flex-col text-gray-700 font-poppins font-semibold text-base">
-            <li className="border-b border-gray-50">
-              <Link to="/" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Home</Link>
-            </li>
-            <li className="border-b border-gray-50">
-              <Link to="/about" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">About Us</Link>
-            </li>
-            <li className="border-b border-gray-50">
-              <Link to="/services" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">Our Services</Link>
-            </li>
-            <li className="border-b border-gray-50">
-              <Link to="/bookings" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50 hover:text-krossover-orange transition">My Bookings</Link>
-            </li>
+            <li className="border-b border-gray-50"><Link to="/" onClick={toggleMenu} className="block px-8 py-4">Home</Link></li>
+            <li className="border-b border-gray-50"><Link to="/about" onClick={toggleMenu} className="block px-8 py-4">About Us</Link></li>
+            <li className="border-b border-gray-50"><Link to="/services" onClick={toggleMenu} className="block px-8 py-4">Our Services</Link></li>
+            <li className="border-b border-gray-50"><Link to="/bookings" onClick={toggleMenu} className="block px-8 py-4">My Bookings</Link></li>
             
-            {/* Mobile Auth Buttons */}
             <li className="px-8 py-6 bg-gray-50 flex flex-col space-y-4">
-              <Link to="/login" onClick={toggleMenu} className="w-full text-center text-krossover-blue border-2 border-krossover-blue text-sm font-bold py-2.5 rounded-md hover:bg-krossover-blue hover:text-white transition">
-                Log In
-              </Link>
-              <Link to="/register" onClick={toggleMenu} className="w-full text-center bg-krossover-orange hover:bg-[#e07b38] text-white text-sm py-2.5 rounded-md font-semibold transition shadow-sm">
-                Register
-              </Link>
+              {isLoggedIn ? (
+                <button onClick={handleLogout} className="w-full text-center text-red-600 border-2 border-red-600 py-2.5 rounded-md font-bold">Logout</button>
+              ) : (
+                <>
+                  <Link to="/login" onClick={toggleMenu} className="w-full text-center text-krossover-blue border-2 border-krossover-blue text-sm font-bold py-2.5 rounded-md hover:bg-krossover-blue hover:text-white transition">
+                    Log In
+                  </Link>
+                  <Link to="/register" onClick={toggleMenu} className="w-full text-center bg-krossover-orange hover:bg-[#e07b38] text-white text-sm py-2.5 rounded-md font-semibold transition shadow-sm">
+                    Register
+                  </Link>
+                </>
+              )}
             </li>
           </ul>
         </div>

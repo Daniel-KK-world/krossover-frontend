@@ -14,11 +14,10 @@ import CTASection from './components/CTASection';
 
 // New Pages
 import AboutPage from './pages/AboutPage';
-// 👇 FIX: Import the ServicesPage component here!
 import ServicesPage from './pages/ServicesPage'; 
-// 👇 NEW: Import your Auth pages here!
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import BookingPage from './pages/BookingPage';  
 
 // 1. Group current landing page components into a single 'Home' view
 const Home = () => {
@@ -52,6 +51,7 @@ function App() {
             
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/book/:serviceId" element={<BookingPage />} /> 
           </Routes>
         </main>
 
