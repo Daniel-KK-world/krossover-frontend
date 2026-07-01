@@ -1,179 +1,147 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const BookingPage = () => {
-  // Grab the service ID from the URL (e.g., /book/:serviceId)
-  const { serviceId } = useParams();
+const BookingsPage = () => {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [service, setService] = useState(null);
-  const [formData, setFormData] = useState({
-    booking_date: '',
-    special_instructions: ''
-  });
-  
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [fetchingService, setFetchingService] = useState(true);
-
-  // Fetch the service details when the page loads so the user sees what they are booking
   useEffect(() => {
-    const fetchServiceDetails = async () => {
+    const fetchBookings = async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/services/${serviceId}`);
-        if (!response.ok) throw new Error("Service not found");
-        
+        const response = await fetch('http://localhost:8000/api/v1/bookings/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load your bookings. Please try again.');
+        }
+
         const data = await response.json();
-        setService(data);
+        setBookings(data);
       } catch (err) {
-        setError("Could not load service details. It may have been removed.");
+        setError(err.message);
       } finally {
-        setFetchingService(false);
+        setLoading(false);
       }
     };
 
-    if (serviceId) {
-      fetchServiceDetails();
-    }
-  }, [serviceId]);
+    fetchBookings();
+  }, [navigate]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
+  const handlePayNow = async (bookingId) => {
     const token = localStorage.getItem('token');
     
-    // Security check: If they somehow got here without a token, boot them to login
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
     try {
-      // Structure matches your schemas.BookingCreate perfectly
-      const payload = {
-        service_id: serviceId,
-        booking_date: new Date(formData.booking_date).toISOString(), // Convert HTML datetime to ISO 8601 for FastAPI
-        special_instructions: formData.special_instructions
-      };
-
-      const response = await fetch('http://localhost:8000/api/v1/bookings/', {
+      const paymentResponse = await fetch(`http://localhost:8000/api/v1/payments/initialize/${bookingId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // The Bouncer!
-        },
-        body: JSON.stringify(payload),
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'Failed to create booking.');
+      if (paymentResponse.ok) {
+        const paymentData = await paymentResponse.json();
+        window.location.href = paymentData.checkout_url;
+      } else {
+        alert("Payment initialization failed. Please try again.");
       }
-
-      // Success! Route them to their "My Bookings" dashboard
-      navigate('/bookings');
-
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error("Error connecting to payment gateway", error);
     }
   };
 
-  if (fetchingService) {
-    return <div className="flex-grow flex items-center justify-center min-h-[calc(100vh-150px)]">Loading service details...</div>;
-  }
-
   return (
-    <div className="flex-grow flex items-center justify-center bg-gray-50 py-24 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-150px)]">
-      
-      <div className="max-w-lg w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
-        
-        <div className="text-center mb-8">
+    <div className="bg-gray-50 min-h-[calc(100vh-150px)] py-16 px-4 sm:px-6 lg:px-8 font-poppins">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-10 border-b border-gray-200 pb-6">
           <h2 className="text-4xl font-extrabold text-krossover-blue font-anton uppercase tracking-wide">
-            Book Service
+            My Bookings
           </h2>
-          {service && (
-            <p className="text-gray-500 font-poppins mt-2">
-              You are booking: <span className="font-bold text-krossover-orange">{service.name}</span>
-            </p>
-          )}
+          <p className="mt-2 text-gray-500">Manage your upcoming and past service requests.</p>
         </div>
-        
+
+        {loading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-krossover-orange"></div>
+          </div>
+        )}
+
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-md">
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md mb-8">
             <p className="text-sm text-red-700 font-medium">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6 font-poppins">
-          
-          {/* Booking Date & Time Input */}
-          <div>
-            <label htmlFor="booking_date" className="block text-sm font-semibold text-gray-700 mb-1">
-              Select Date and Time
-            </label>
-            <input
-              type="datetime-local"
-              id="booking_date"
-              name="booking_date"
-              value={formData.booking_date}
-              onChange={handleChange}
-              required
-              className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-krossover-orange focus:border-transparent transition duration-200"
-            />
+        {!loading && !error && bookings.length === 0 && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-16 text-center flex flex-col items-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">No Bookings Yet</h3>
+            <p className="text-gray-500 mb-8">You haven't booked any services yet.</p>
+            <Link to="/services" className="bg-krossover-blue hover:bg-krossover-orange text-white px-8 py-3 rounded-md font-bold transition-colors">
+              Explore Our Services
+            </Link>
           </div>
+        )}
 
-          {/* Special Instructions Input */}
-          <div>
-            <label htmlFor="special_instructions" className="block text-sm font-semibold text-gray-700 mb-1">
-              Special Instructions (Optional)
-            </label>
-            <textarea
-              id="special_instructions"
-              name="special_instructions"
-              value={formData.special_instructions}
-              onChange={handleChange}
-              rows="4"
-              className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-krossover-orange focus:border-transparent transition duration-200"
-              placeholder="E.g., Please ensure the bus has AC, or 'Pick up at the main gate'."
-            />
+        {!loading && !error && bookings.length > 0 && (
+          <div className="space-y-6">
+            {bookings.map((booking) => (
+              <div key={booking.id} className="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-lg transition-shadow">
+                <div className="flex-grow">
+                  <div className="flex items-center gap-3 mb-2">
+                    
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {booking.service_name || "Service Booking"}
+                    </h3>
+                    
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full uppercase ${
+                      booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-700' : 
+                      booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {booking.status || 'PENDING'}
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm space-y-1">
+                    <p><span className="font-semibold text-gray-800">Date:</span> {new Date(booking.booking_date).toLocaleDateString('en-GB')}</p>
+                    {booking.special_instructions && <p><span className="font-semibold text-gray-800">Note:</span> {booking.special_instructions}</p>}
+                  </div>
+                </div>
+
+                <div className="text-right md:border-l md:border-gray-100 md:pl-6">
+                  {booking.status === 'PENDING' ? (
+                    <button 
+                      onClick={() => handlePayNow(booking.id)}
+                      className="bg-krossover-orange hover:bg-orange-600 text-white px-6 py-2 rounded font-bold w-full md:w-auto transition-colors"
+                    >
+                      Pay Now
+                    </button>
+                  ) : (
+                    <button className="text-krossover-blue border border-krossover-blue hover:bg-blue-50 px-6 py-2 rounded font-bold w-full md:w-auto transition-colors">
+                      View Details
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* Base Price Display (Read-Only) */}
-          {service && (
-            <div className="bg-blue-50 p-4 rounded-md border border-blue-100 flex justify-between items-center">
-              <span className="text-sm font-semibold text-gray-700">Estimated Base Price:</span>
-              <span className="text-lg font-bold text-krossover-blue">GHS {service.base_price}</span>
-            </div>
-          )}
-
-          <button 
-            type="submit" 
-            disabled={loading || !service}
-            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-lg font-bold text-white transition-all duration-300 ${
-              loading || !service
-                ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-krossover-orange hover:bg-krossover-blue hover:-translate-y-1'
-            }`}
-          >
-            {loading ? 'Processing...' : 'Confirm Booking'}
-          </button>
-        </form>
-        
+        )}
       </div>
     </div>
   );
 };
 
-export default BookingPage;
+export default BookingsPage;

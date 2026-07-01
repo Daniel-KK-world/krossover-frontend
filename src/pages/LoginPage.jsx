@@ -39,7 +39,11 @@ const LoginPage = () => {
         throw new Error(data.detail || 'Failed to login. Please try again.');
       }
 
+      // Store credentials and notify the Navbar to update
       localStorage.setItem('token', data.access_token);
+      localStorage.setItem('userName', data.user_name); 
+      window.dispatchEvent(new Event("auth-change")); 
+
       navigate('/services');
 
     } catch (err) {
@@ -50,13 +54,11 @@ const LoginPage = () => {
   };
 
   return (
-    /* Updated to use py-24 and min-h calculation to prevent navbar overlap */
     <div className="flex-grow flex items-center justify-center bg-gray-50 py-24 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-150px)]">
       
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
         
         <div className="text-center mb-8">
-          {/* Fixed duplicate font-anton and added font-extrabold */}
           <h2 className="text-4xl font-extrabold text-krossover-blue font-anton uppercase tracking-wide">
             Welcome Back
           </h2>
@@ -72,7 +74,6 @@ const LoginPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6 font-poppins">
-          
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1">
               Email Address
@@ -118,7 +119,6 @@ const LoginPage = () => {
           </button>
         </form>
 
-        {/* UPDATED FOOTER WITH BLUE OUTLINE BUTTON */}
         <div className="mt-8 text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600 font-poppins mb-4">
             Don't have an account?

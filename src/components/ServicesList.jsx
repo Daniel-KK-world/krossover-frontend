@@ -81,7 +81,8 @@ const ServicesList = () => {
                 {/* High-End Direct Booking Button Flow */}
                 <div className="pt-4 border-t border-gray-100 mt-auto">
                   <Link 
-                    to={`/book/${service.id}`} // Links perfectly to the Route we set up earlier!
+                    to="/confirm-booking"
+                    state={{ service: service }}
                     className="group/btn relative w-full inline-flex items-center justify-center gap-3 bg-[#1F628D] text-white text-sm font-extrabold py-3.5 px-6 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-[0_8px_25px_rgba(255,145,76,0.3)] hover:-translate-y-0.5"
                   >
                     {/* Orange wave sweeps up from the bottom */}
@@ -112,5 +113,5 @@ const ServicesList = () => {
     </section>
   );
 };
-
-export default ServicesList;
+ 
+export default ServicesList;  

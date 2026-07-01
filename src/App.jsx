@@ -18,6 +18,7 @@ import ServicesPage from './pages/ServicesPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import BookingPage from './pages/BookingPage';  
+import ConfirmBookingPage from './pages/ConfirmBookingPage';  // New page for confirming bookings
 
 // 1. Group current landing page components into a single 'Home' view
 const Home = () => {
@@ -51,7 +52,8 @@ function App() {
             
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/book/:serviceId" element={<BookingPage />} /> 
+            <Route path="/bookings" element={<BookingPage />} /> 
+            <Route path="/confirm-booking" element={<ConfirmBookingPage />} />
           </Routes>
         </main>
 
