@@ -1,51 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const ServicesList = () => {
-  // Maintaining your imagery data from the preview, keeping styling beautifully aligned
-  const services = [
-    {
-      id: "bus-hiring",
-      title: "Bus Hiring Services",
-      description: "Premium and reliable buses for corporate events, private trips, and commercial transport across the country.",
-      image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2071&auto=format&fit=crop",
-    },
-    {
-      id: "driving-school",
-      title: "Driving School",
-      description: "Train with seasoned professionals. We thoroughly assist with license acquisition, stress-free renewals, and replacements.",
-      image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      id: "delivery",
-      title: "Delivery Services",
-      description: "Fast, secure, and efficient logistics, parcel delivery, and haulage solutions across the nation.",
-      image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      id: "travel-tour",
-      title: "Travel & Tour",
-      description: "Comprehensive travel management, corporate ticketing arrangements, and tour consultancy across the globe.",
-      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
-    },
-    {
-      id: "mechanics",
-      title: "Mechanics & Maintenance",
-      description: "Expert vehicle diagnostics, rapid routine servicing, and full-scale electrical or mechanical repairs.",
-      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      id: "towing",
-      title: "Towing Services",
-      description: "24/7 rapid response vehicle towing, recovery machinery, and roadside assistance when you need it most.",
-      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop",
-    }
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 1. Fetch live data from your FastAPI backend
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/v1/services/');
+        if (!response.ok) throw new Error('Failed to load services from the server.');
+        
+        const data = await response.json();
+        setServices(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   return (
     <section className="py-24 px-6 bg-white font-poppins relative">
       <div className="max-w-7xl mx-auto relative z-10">
         
+        {/* Loading & Error States */}
+        {loading && (
+          <div className="text-center py-12">
+            <p className="text-xl font-bold text-krossover-blue animate-pulse">Loading fleet and services...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-500 font-bold">{error}</p>
+          </div>
+        )}
+
         {/* Services Grid matching your preview styling */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
@@ -57,28 +53,35 @@ const ServicesList = () => {
               <div className="absolute top-0 left-0 h-1.5 w-0 bg-gradient-to-r from-[#FF914C] to-[#1F628D] transition-all duration-700 ease-out group-hover/card:w-full z-20"></div>
 
               {/* Service Image with Cinematic Tint */}
-              <div className="h-56 overflow-hidden relative">
+              <div className="h-56 overflow-hidden relative bg-gray-200">
                 <div className="absolute inset-0 bg-[#1F628D]/20 mix-blend-multiply group-hover/card:bg-transparent transition-colors duration-500 z-10"></div>
                 <img 
-                  src={service.image} 
-                  alt={service.title} 
+                  // Fallback to a default image if the database image_url is empty
+                  src={service.image_url || "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2071&auto=format&fit=crop"} 
+                  alt={service.name} 
                   className="w-full h-full object-cover transform scale-100 group-hover/card:scale-110 transition-transform duration-700 ease-in-out"
                 />
               </div>
 
               {/* Service Content */}
               <div className="p-8 flex flex-col flex-grow bg-white relative z-10">
-                <h4 className="text-2xl font-extrabold font-anton text-[#1F628D] mb-3 uppercase group-hover/card:text-[#FF914C] transition-colors duration-300">
-                  {service.title}
-                </h4>
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="text-2xl font-extrabold font-anton text-[#1F628D] uppercase group-hover/card:text-[#FF914C] transition-colors duration-300">
+                    {service.name} {/* Mapped from backend 'name' */}
+                  </h4>
+                  <span className="text-sm font-bold text-[#FF914C] bg-orange-50 px-2 py-1 rounded">
+                    GHS {service.base_price}
+                  </span>
+                </div>
+                
                 <p className="text-gray-600 mb-8 text-sm leading-relaxed flex-grow">
-                  {service.description}
+                  {service.description} {/* Mapped from backend 'description' */}
                 </p>
                 
                 {/* High-End Direct Booking Button Flow */}
                 <div className="pt-4 border-t border-gray-100 mt-auto">
                   <Link 
-                    to={`/book?service=${service.id}`}
+                    to={`/book/${service.id}`} // Links perfectly to the Route we set up earlier!
                     className="group/btn relative w-full inline-flex items-center justify-center gap-3 bg-[#1F628D] text-white text-sm font-extrabold py-3.5 px-6 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-[0_8px_25px_rgba(255,145,76,0.3)] hover:-translate-y-0.5"
                   >
                     {/* Orange wave sweeps up from the bottom */}
@@ -97,6 +100,13 @@ const ServicesList = () => {
             </div>
           ))}
         </div>
+
+        {/* Empty Database State */}
+        {!loading && services.length === 0 && (
+          <div className="text-center mt-8 p-8 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-gray-500 font-poppins">No services are currently active in the database.</p>
+          </div>
+        )}
 
       </div>
     </section>
