@@ -17,7 +17,7 @@ export default function AboutPage() {
       <section className="w-full max-w-7xl mx-auto px-4 py-8 md:py-12">
         <img 
           src="src\assets\krossover_team.JPG" 
-          alt="Krossover Transport History" 
+          alt="Krossover Team Picture" 
           className="w-full max-h-[500px] object-cover rounded-2xl shadow-lg"
         />
       </section>
@@ -27,18 +27,18 @@ export default function AboutPage() {
       {/* 2. A nice 3-column photo grid to show off the fleet/services before Mission & Vision */}
       <section className="w-full max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <img 
-          src="/images/fleet-1.jpg" 
-          alt="Krossover Fleet" 
+          src="src/assets/krossover_team2.JPG" 
+          alt="Krossover Team 2" 
           className="w-full h-64 object-cover rounded-xl shadow-md hover:opacity-90 transition-opacity" 
         />
         <img 
-          src="/images/fleet-2.jpg" 
-          alt="Krossover Towing" 
+          src="src/assets/krossover_team3.JPG" 
+          alt="Krossover Team 3" 
           className="w-full h-64 object-cover rounded-xl shadow-md hover:opacity-90 transition-opacity" 
         />
         <img 
-          src="/images/fleet-3.jpg" 
-          alt="Krossover Shuttle" 
+          src="src/assets/krossover_team4.JPG" 
+          alt="Krossover team 4" 
           className="w-full h-64 object-cover rounded-xl shadow-md hover:opacity-90 transition-opacity" 
         />
       </section>
@@ -48,8 +48,8 @@ export default function AboutPage() {
       {/* 3. A final wide shot (maybe office or depot) right before introducing the team */}
       <section className="w-full max-w-5xl mx-auto px-4 py-12">
         <img 
-          src="/images/hq-facility.jpg" 
-          alt="Krossover Headquarters" 
+          src="src/assets/krossover_team5.JPG" 
+          alt="Krossover team 5" 
           className="w-full h-[400px] object-cover rounded-2xl shadow-xl"
         />
       </section>
