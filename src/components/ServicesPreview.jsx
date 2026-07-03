@@ -7,37 +7,37 @@ const ServicesPreview = () => {
       id: 1,
       title: "Bus Hiring Services",
       description: "Premium and reliable buses for corporate events, private trips, and commercial transport.",
-      image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2071&auto=format&fit=crop",
+      image: "src/assets/bus_hiring.JPG",
     },
     {
       id: 2,
       title: "Driving School",
       description: "Train with seasoned professionals. We also assist with license acquisition and renewals.",
-      image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop",
+      image: "src/assets/driving_school.JPG",
     },
     {
       id: 3,
       title: "Delivery Services",
       description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
-      image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?q=80&w=1974&auto=format&fit=crop",
+      image: "src/assets/delivery.JPG",
     },
     {
       id: 4,
       title: "Travel & Tour",
       description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
-      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop",
+      image: "src\\assets\\travel_and_tour.JPG",
     },
     {
       id: 5,
       title: "Mechanics & Maintenance",
       description: "Expert vehicle diagnostics, routine maintenance, and full-scale mechanical repairs.",
-      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1974&auto=format&fit=crop",
+      image: "src/assets/maintenance.JPG",
     },
     {
       id: 6,
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
-      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop",
+      image: "src/assets/towing.JPG",
     }
   ];
 
