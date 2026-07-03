@@ -5,22 +5,22 @@ export default function TeamGrid() {
     { 
       name: "Mr. Appau Prince Kwame", 
       role: "CEO", 
-      image: "src/assets/krossover_ceo.JPG" 
+      image: "src/assets/krossover_ceo.jpg" 
     },
     { 
       name: "Elvis Owusu Mark", 
       role: "Operations Manager", 
-      image: "src/assets/krossover_operationsmanager.JPG" 
+      image: "src/assets/krossover_operationsmanager.jpg" 
     },
     { 
       name: "Joshua Ansah", 
       role: "Fleet Manager", 
-      image: "src/assets/krossover_fleetmanager.JPG" 
+      image: "src/assets/krossover_fleetmanager.jpg" 
     },
     { 
       name: "Erica Lekey Mawunyo", 
       role: "Human Relations Manageress", 
-      image: "src/assets/krossover_hr.JPG" 
+      image: "src/assets/krossover_hr.jpg" 
     }
   ];
 

@@ -7,37 +7,37 @@ const ServicesPreview = () => {
       id: 1,
       title: "Bus Hiring Services",
       description: "Premium and reliable buses for corporate events, private trips, and commercial transport.",
-      image: "src/assets/bus_hiring.JPG",
+      image: "src/assets/bus_hiring.jpg",
     },
     {
       id: 2,
       title: "Driving School",
       description: "Train with seasoned professionals. We also assist with license acquisition and renewals.",
-      image: "src/assets/driving_school.JPG",
+      image: "src/assets/driving_school.jpg",
     },
     {
       id: 3,
       title: "Delivery Services",
       description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
-      image: "src/assets/delivery.JPG",
+      image: "src/assets/delivery.jpg",
     },
     {
       id: 4,
       title: "Travel & Tour",
       description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
-      image: "src\\assets\\travel_and_tour.JPG",
+      image: "src\\assets\\travel_and_tour.jpg",
     },
     {
       id: 5,
       title: "Mechanics & Maintenance",
       description: "Expert vehicle diagnostics, routine maintenance, and full-scale mechanical repairs.",
-      image: "src/assets/maintenance.JPG",
+      image: "src/assets/maintenance.jpg",
     },
     {
       id: 6,
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
-      image: "src/assets/towing.JPG",
+      image: "src/assets/towing.jpg",
     }
   ];
 

@@ -67,7 +67,7 @@ const AboutSnippet = () => {
           <div className="relative overflow-hidden rounded-lg shadow-2xl z-10 border border-white/10">
             {/* Image slowly zooms in on hover */}
             <img 
-              src="src/assets/aboutkrossover.JPG" 
+              src="src/assets/aboutkrossover.jpg" 
               alt="Krossover Transport Professional Fleet" 
               className="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
             />

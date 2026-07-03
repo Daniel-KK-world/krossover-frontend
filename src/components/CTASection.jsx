@@ -70,7 +70,7 @@ const CTASection = () => {
         <div className="lg:w-1/2 relative h-[300px] lg:h-auto overflow-hidden">
           {/* Unsplash placeholder - Cinematic Zoom on Card Hover */}
           <img 
-            src="src/assets/home_cta.JPG" 
+            src="src/assets/home_cta.jpg" 
             alt="Start Your Journey" 
             className="w-full h-full object-cover transform scale-100 group-hover/cta:scale-110 transition-transform duration-1000 ease-in-out"
           />
