@@ -1,6 +1,6 @@
 import React from 'react';
 // 1. Import the local image bundler hashes and includes it in production
-import aboutKrossoverImg from '../assets/aboutkrossover.jpg';
+import aboutKrossoverImg from '../assets/aboutkrossover.JPG';
 
 const AboutSnippet = () => {
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import ceoImg from '../assets/krossover_ceo.jpg';
-import opsManagerImg from '../assets/krossover_operationsmanager.jpg';
-import fleetManagerImg from '../assets/krossover_fleetmanager.jpg';
-import hrManagerImg from '../assets/krossover_hr.jpg';
+import ceoImg from '../assets/krossover_ceo.JPG';
+import opsManagerImg from '../assets/krossover_operationsmanager.JPG';
+import fleetManagerImg from '../assets/krossover_fleetmanager.JPG';
+import hrManagerImg from '../assets/krossover_hr.JPG';
 
 export default function TeamGrid() {
   const teamMembers = [

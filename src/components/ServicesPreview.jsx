@@ -1,12 +1,12 @@
 import React from 'react';
 
 
-import busHiringImg from '../assets/bus_hiring.jpg';
-import drivingSchoolImg from '../assets/driving_school.jpg';
-import deliveryImg from '../assets/delivery.jpg';
-import travelTourImg from '../assets/travel_and_tour.jpg';
-import maintenanceImg from '../assets/maintenance.jpg';
-import towingImg from '../assets/towing.jpg';
+import busHiringImg from '../assets/bus_hiring.JPG';
+import drivingSchoolImg from '../assets/driving_school.JPG';
+import deliveryImg from '../assets/delivery.JPG';
+import travelTourImg from '../assets/travel_and_tour.JPG';
+import maintenanceImg from '../assets/maintenance.JPG';
+import towingImg from '../assets/towing.JPG';
 
 const ServicesPreview = () => {
   // 2. Replace the hardcoded strings with your imported variables

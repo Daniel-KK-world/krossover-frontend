@@ -12,7 +12,8 @@ export default function AboutHero() {
       ></div>
 
       {/* 2. Balanced Overlay for Text Legibility */}
-      {/* Swapped the heavy dark blue gradient for a cleaner tint that keeps the image bright but ensures the white text pops */}
+      {/* Swapped the heavy dark blue gradient for a cleaner tint t
+      hat keeps the image bright but ensures the white text pops */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#1F628D]/80 via-[#1F628D]/65 to-[#1F628D]/80 z-[-1]"></div>
 
       {/* 3. Subtle Tech Grid Pattern */}

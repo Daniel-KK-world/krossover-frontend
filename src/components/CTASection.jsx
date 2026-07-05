@@ -1,6 +1,6 @@
 import React from 'react';
 // Import CTA image
-import homeCtaImg from '../assets/home_cta.jpg';
+import homeCtaImg from '../assets/home_cta.JPG';
 
 const CTASection = () => {
   return (
