@@ -1,43 +1,51 @@
 import React from 'react';
 
+
+import busHiringImg from '../assets/bus_hiring.jpg';
+import drivingSchoolImg from '../assets/driving_school.jpg';
+import deliveryImg from '../assets/delivery.jpg';
+import travelTourImg from '../assets/travel_and_tour.jpg';
+import maintenanceImg from '../assets/maintenance.jpg';
+import towingImg from '../assets/towing.jpg';
+
 const ServicesPreview = () => {
-  // Array of the 6 core services outlined in the Krossover proposal
+  // 2. Replace the hardcoded strings with your imported variables
   const services = [
     {
       id: 1,
       title: "Bus Hiring Services",
       description: "Premium and reliable buses for corporate events, private trips, and commercial transport.",
-      image: "src/assets/bus_hiring.jpg",
+      image: busHiringImg,
     },
     {
       id: 2,
       title: "Driving School",
       description: "Train with seasoned professionals. We also assist with license acquisition and renewals.",
-      image: "src/assets/driving_school.jpg",
+      image: drivingSchoolImg,
     },
     {
       id: 3,
       title: "Delivery Services",
       description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
-      image: "src/assets/delivery.jpg",
+      image: deliveryImg,
     },
     {
       id: 4,
       title: "Travel & Tour",
       description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
-      image: "src\\assets\\travel_and_tour.jpg",
+      image: travelTourImg,
     },
     {
       id: 5,
       title: "Mechanics & Maintenance",
       description: "Expert vehicle diagnostics, routine maintenance, and full-scale mechanical repairs.",
-      image: "src/assets/maintenance.jpg",
+      image: maintenanceImg,
     },
     {
       id: 6,
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
-      image: "src/assets/towing.jpg",
+      image: towingImg,
     }
   ];
 

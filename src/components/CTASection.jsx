@@ -1,4 +1,6 @@
 import React from 'react';
+// Import CTA image
+import homeCtaImg from '../assets/home_cta.jpg';
 
 const CTASection = () => {
   return (
@@ -68,9 +70,9 @@ const CTASection = () => {
 
         {/* Right Side: Visual/Image Container */}
         <div className="lg:w-1/2 relative h-[300px] lg:h-auto overflow-hidden">
-          {/* Unsplash placeholder - Cinematic Zoom on Card Hover */}
+          {/* 2. Use the imported variable here instead of the string path */}
           <img 
-            src="src/assets/home_cta.jpg" 
+            src={homeCtaImg} 
             alt="Start Your Journey" 
             className="w-full h-full object-cover transform scale-100 group-hover/cta:scale-110 transition-transform duration-1000 ease-in-out"
           />

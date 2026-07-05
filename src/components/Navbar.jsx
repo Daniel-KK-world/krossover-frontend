@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+// 1.  brand logo 
+import logoImg from '../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,8 +49,9 @@ const Navbar = () => {
       </div>
 
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 bg-white">
+        {/* 2. Use the imported variable inside the src attribute */}
         <Link to="/" className="flex items-center">
-          <img src="src/assets/logo.png" alt="Logo" className="h-12 md:h-14 w-auto" />
+          <img src={logoImg} alt="Logo" className="h-12 md:h-14 w-auto" />
         </Link>
 
         <div className="hidden lg:flex items-center space-x-10">

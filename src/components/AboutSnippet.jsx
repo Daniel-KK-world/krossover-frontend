@@ -1,4 +1,6 @@
 import React from 'react';
+// 1. Import the local image bundler hashes and includes it in production
+import aboutKrossoverImg from '../assets/aboutkrossover.jpg';
 
 const AboutSnippet = () => {
   return (
@@ -65,9 +67,9 @@ const AboutSnippet = () => {
           
           {/* Main Image Container */}
           <div className="relative overflow-hidden rounded-lg shadow-2xl z-10 border border-white/10">
-            {/* Image slowly zooms in on hover */}
+            {/* 2. Use the imported image variable here */}
             <img 
-              src="src/assets/aboutkrossover.jpg" 
+              src={aboutKrossoverImg} 
               alt="Krossover Transport Professional Fleet" 
               className="w-full h-[350px] md:h-[450px] object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
             />

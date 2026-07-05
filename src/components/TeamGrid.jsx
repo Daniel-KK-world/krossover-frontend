@@ -1,26 +1,32 @@
 import React from 'react';
 
+import ceoImg from '../assets/krossover_ceo.jpg';
+import opsManagerImg from '../assets/krossover_operationsmanager.jpg';
+import fleetManagerImg from '../assets/krossover_fleetmanager.jpg';
+import hrManagerImg from '../assets/krossover_hr.jpg';
+
 export default function TeamGrid() {
   const teamMembers = [
     { 
       name: "Mr. Appau Prince Kwame", 
       role: "CEO", 
-      image: "src/assets/krossover_ceo.jpg" 
+      // 2. Replace the strings with the imported variables
+      image: ceoImg 
     },
     { 
       name: "Elvis Owusu Mark", 
       role: "Operations Manager", 
-      image: "src/assets/krossover_operationsmanager.jpg" 
+      image: opsManagerImg 
     },
     { 
       name: "Joshua Ansah", 
       role: "Fleet Manager", 
-      image: "src/assets/krossover_fleetmanager.jpg" 
+      image: fleetManagerImg 
     },
     { 
       name: "Erica Lekey Mawunyo", 
       role: "Human Relations Manageress", 
-      image: "src/assets/krossover_hr.jpg" 
+      image: hrManagerImg 
     }
   ];
 

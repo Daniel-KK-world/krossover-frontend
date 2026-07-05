@@ -1,4 +1,6 @@
 import React from 'react';
+// 1. Import local bus image
+import krossoverBusImg from '../assets/krossoverbus.png';
 
 const Hero = () => {
   return (
@@ -37,8 +39,9 @@ const Hero = () => {
       {/* Right Visual Content - Keeping the full bus exactly as you wanted it! */}
       <div className="md:w-1/2 mt-8 md:mt-0 relative w-full h-[300px] md:h-[450px] z-10">
         <div className="absolute inset-0 animate-drive-in flex items-center justify-center">
+          {/* 2. Swap the string path for the imported variable */}
           <img 
-            src="src/assets/krossoverbus.png" 
+            src={krossoverBusImg} 
             alt="Krossover Bus" 
             className="w-full max-w-lg object-contain drop-shadow-2xl"
           />
