@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const BookingsPage = () => {
+const BookingPage = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    // If not authenticated, redirect to login
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
     const fetchBookings = async () => {
-      const token = localStorage.getItem('token');
+      // ✅ FIXED: Use 'access_token' not 'token'
+      const token = localStorage.getItem('access_token');
       
       if (!token) {
         navigate('/login');
@@ -39,10 +48,11 @@ const BookingsPage = () => {
     };
 
     fetchBookings();
-  }, [navigate]);
+  }, [navigate, isAuthenticated]);
 
   const handlePayNow = async (bookingId) => {
-    const token = localStorage.getItem('token');
+    // ✅ FIXED: Use 'access_token' not 'token'
+    const token = localStorage.getItem('access_token');
     
     try {
       const paymentResponse = await fetch(`http://localhost:8000/api/v1/payments/initialize/${bookingId}`, {
@@ -102,7 +112,6 @@ const BookingsPage = () => {
               <div key={booking.id} className="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-lg transition-shadow">
                 <div className="flex-grow">
                   <div className="flex items-center gap-3 mb-2">
-                    
                     <h3 className="text-xl font-bold text-gray-900">
                       {booking.service_name || "Service Booking"}
                     </h3>
@@ -144,4 +153,4 @@ const BookingsPage = () => {
   );
 };
 
-export default BookingsPage;
+export default BookingPage;

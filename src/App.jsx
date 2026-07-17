@@ -21,10 +21,10 @@ import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import VerifyOTPPage from './pages/VerifyOTPPage';           // ← ADD THIS
-import ForgotPasswordPage from './pages/ForgotPasswordPage'; // ← ADD THIS
-import ResetPasswordPage from './pages/ResetPasswordPage';   // ← ADD THIS
-import BookingPage from './pages/BookingPage';
+import VerifyOTPPage from './pages/VerifyOTPPage';          
+import ForgotPasswordPage from './pages/ForgotPasswordPage'; 
+import ResetPasswordPage from './pages/ResetPasswordPage';  
+import BookingPage from './pages/BookingPage';  // ← NOW CORRECT
 import ConfirmBookingPage from './pages/ConfirmBookingPage';
 
 // ─── HOME VIEW ────────────────────────────────────────────
@@ -42,7 +42,6 @@ const Home = () => {
 
 function App() {
   return (
-    // ─── WRAP ENTIRE APP WITH AuthProvider ──────────────
     <AuthProvider>
       <Router>
         <div className="min-h-screen bg-white flex flex-col">
@@ -50,7 +49,7 @@ function App() {
 
           <main className="flex-grow">
             <Routes>
-              {/* ─── PUBLIC ROUTES (No login required) ─── */}
+              {/* ─── PUBLIC ROUTES ─── */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -59,7 +58,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-              {/* ─── PROTECTED ROUTES (Login required) ─── */}
+              {/* ─── PROTECTED ROUTES ─── */}
               <Route
                 path="/services"
                 element={
@@ -70,6 +69,14 @@ function App() {
               />
               <Route
                 path="/bookings"
+                element={
+                  <ProtectedRoute>
+                    <BookingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/booking"
                 element={
                   <ProtectedRoute>
                     <BookingPage />

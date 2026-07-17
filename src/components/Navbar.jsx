@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from 'react';
+// components/Navbar.jsx
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// 1.  brand logo 
+import { useAuth } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { isAuthenticated, logout, user } = useAuth();  // ← Added user
   const navigate = useNavigate();
 
-  // FIX: Force Navbar to update whenever storage changes (login/logout)
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem('token'));
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    // Also listen for custom event we'll dispatch in Login/Logout
-    window.addEventListener('auth-change', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('auth-change', handleStorageChange);
-    };
-  }, []);
-
   const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userName');
-    window.dispatchEvent(new Event("auth-change"));
+    logout();
+    setDropdownOpen(false);
     navigate('/');
   };
 
-  const getInitials = (name) => name ? name.charAt(0).toUpperCase() : 'U';
+  const getInitials = () => {
+    const name = user?.name || localStorage.getItem('userName') || 'User';
+    return name.charAt(0).toUpperCase();
+  };
 
   return (
     <header className="w-full sticky top-0 z-50 flex flex-col shadow-md bg-white font-poppins">
@@ -49,7 +38,6 @@ const Navbar = () => {
       </div>
 
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 bg-white">
-        {/* 2. Use the imported variable inside the src attribute */}
         <Link to="/" className="flex items-center">
           <img src={logoImg} alt="Logo" className="h-12 md:h-14 w-auto" />
         </Link>
@@ -59,47 +47,155 @@ const Navbar = () => {
             <li><Link to="/" className="hover:text-krossover-orange">Home</Link></li>
             <li><Link to="/about" className="hover:text-krossover-orange">About Us</Link></li>
             <li><Link to="/services" className="hover:text-krossover-orange">Our Services</Link></li>
-            <li><Link to="/bookings" className="hover:text-krossover-orange">My Bookings</Link></li>
+            <li>
+              {/* ✅ REMOVED manual auth check - let ProtectedRoute handle it */}
+              <Link to="/bookings" className="hover:text-krossover-orange">
+                My Bookings
+              </Link>
+            </li>
           </ul>
 
           <div className="flex items-center border-l-2 border-gray-200 pl-6">
-            {isLoggedIn ? (
-              <div className="relative group">
-                <button className="h-10 w-10 rounded-full bg-krossover-blue text-white font-bold flex items-center justify-center shadow-md hover:ring-2 hover:ring-krossover-orange transition">
-                  {getInitials(localStorage.getItem('userName'))}
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="h-10 w-10 rounded-full bg-krossover-blue text-white font-bold flex items-center justify-center shadow-md hover:ring-2 hover:ring-krossover-orange transition"
+                >
+                  {getInitials()}
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
-                  <div className="py-2">
-                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</Link>
-                    <Link to="/change-password" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Security</Link>
-                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-bold">Logout</button>
+
+                {/* Dropdown Menu */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-semibold text-gray-800">
+                        {user?.name || localStorage.getItem('userName') || 'User'}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {user?.email || localStorage.getItem('userEmail') || ''}
+                      </p>
+                    </div>
+
+                    <Link
+                      to="/change-password"
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      🔒 Change Password
+                    </Link>
+
+                    <Link
+                      to="/bookings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      📋 My Bookings
+                    </Link>
+
+                    <hr className="my-1 border-gray-100" />
+
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold"
+                    >
+                      🚪 Logout
+                    </button>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="space-x-4">
-                <Link to="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange">Log In</Link>
-                <Link to="/register" className="bg-krossover-orange text-white text-sm px-5 py-1.5 rounded-md font-semibold shadow-sm">Register</Link>
+                <Link to="/login" className="text-krossover-blue text-sm font-bold hover:text-krossover-orange">
+                  Log In
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-krossover-orange text-white text-sm px-5 py-1.5 rounded-md font-semibold shadow-sm hover:bg-krossover-blue transition"
+                >
+                  Register
+                </Link>
               </div>
             )}
           </div>
         </div>
 
+        {/* Mobile Menu Button */}
         <button className="lg:hidden" onClick={toggleMenu}>
           <svg className="w-8 h-8 text-krossover-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+            />
           </svg>
         </button>
       </nav>
 
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100">
           <ul className="flex flex-col text-gray-700 font-semibold">
-            {['Home', 'About Us', 'Our Services', 'My Bookings'].map((item) => (
-              <li key={item} className="border-b border-gray-50">
-                <Link to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`} onClick={toggleMenu} className="block px-8 py-4">{item}</Link>
-              </li>
-            ))}
+            <li className="border-b border-gray-50">
+              <Link to="/" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+                Home
+              </Link>
+            </li>
+            <li className="border-b border-gray-50">
+              <Link to="/about" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+                About Us
+              </Link>
+            </li>
+            <li className="border-b border-gray-50">
+              <Link to="/services" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+                Our Services
+              </Link>
+            </li>
+            <li className="border-b border-gray-50">
+              {/* ✅ REMOVED manual auth check - let ProtectedRoute handle it */}
+              <Link 
+                to="/bookings" 
+                onClick={toggleMenu}
+                className="block px-8 py-4 hover:bg-gray-50"
+              >
+                My Bookings
+              </Link>
+            </li>
+
+            {isAuthenticated ? (
+              <>
+                <li className="border-b border-gray-50">
+                  <Link to="/change-password" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+                    🔒 Change Password
+                  </Link>
+                </li>
+                <li className="border-b border-gray-50">
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
+                    className="block w-full text-left px-8 py-4 text-red-600 font-bold hover:bg-red-50"
+                  >
+                    🚪 Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="border-b border-gray-50">
+                  <Link to="/login" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+                    Log In
+                  </Link>
+                </li>
+                <li className="border-b border-gray-50">
+                  <Link to="/register" onClick={toggleMenu} className="block px-8 py-4 bg-krossover-orange text-white font-bold hover:bg-krossover-blue">
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       )}

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -50,11 +52,13 @@ const LoginPage = () => {
         throw new Error(data.detail || 'Invalid credentials');
       }
 
-      // Store token
-      localStorage.setItem('access_token', data.access_token);
-      localStorage.setItem('token_type', data.token_type);
+      // ─── STORE TOKEN & USER DATA USING AUTH CONTEXT ───
+      login(data.access_token, {
+        name: data.user?.name || 'User',
+        email: formData.email,
+      });
       
-      // Redirect to dashboard
+      // Redirect to home
       navigate('/');
 
     } catch (err) {
