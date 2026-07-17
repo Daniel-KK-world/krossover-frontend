@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const ConfirmBookingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isAuthenticated } = useAuth();
   
   // Access the state safely
   const service = location.state?.service;
@@ -14,22 +16,33 @@ const ConfirmBookingPage = () => {
     if (!service) {
       navigate('/services');
     }
-  }, [service, navigate]);
+    // If not authenticated, redirect to login
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [service, navigate, isAuthenticated]);
 
   // If service is missing, don't try to render the rest
   if (!service) return null;
 
   const handleConfirm = async () => {
     setIsSubmitting(true);
-    const token = localStorage.getItem('token');
+    // ✅ FIXED: Use 'access_token' not 'token'
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      console.error('No token found');
+      navigate('/login');
+      return;
+    }
 
     try {
-      // 1. Create the PENDING booking in your DB (URL fixed to root '/')
+      // 1. Create the PENDING booking in your DB
       const bookingResponse = await fetch('http://localhost:8000/api/v1/bookings/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Sends the token to fix 401
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           service_id: service.id,
@@ -42,11 +55,12 @@ const ConfirmBookingPage = () => {
         const bookingData = await bookingResponse.json();
         const bookingId = bookingData.id;
 
-        // 2. IMMEDIATELY call your NEW /initialize/{booking_id} endpoint
+        // 2. IMMEDIATELY call your /initialize/{booking_id} endpoint
         const paymentResponse = await fetch(`http://localhost:8000/api/v1/payments/initialize/${bookingId}`, {
           method: 'POST',
           headers: { 
-            'Authorization': `Bearer ${token}` 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
 
@@ -57,14 +71,17 @@ const ConfirmBookingPage = () => {
           window.location.href = paymentData.checkout_url; 
         } else {
           console.error("Payment initialization failed");
-          navigate('/bookings'); // Fallback to history if payment generation fails
+          navigate('/bookings');
         }
       } else {
         const errorData = await bookingResponse.json();
         console.error("Booking creation failed:", errorData.detail);
+        // Show error to user
+        alert(`Booking failed: ${errorData.detail || 'Please try again'}`);
       }
     } catch (error) {
       console.error("Booking/Payment flow failed", error);
+      alert('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -84,7 +101,7 @@ const ConfirmBookingPage = () => {
         <button 
           onClick={handleConfirm}
           disabled={isSubmitting}
-          className="w-full bg-krossover-orange hover:bg-orange-600 text-white font-bold py-4 rounded-md shadow-md transition-colors"
+          className="w-full bg-krossover-orange hover:bg-orange-600 text-white font-bold py-4 rounded-md shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Processing...' : 'Confirm & Create Booking'}
         </button>
