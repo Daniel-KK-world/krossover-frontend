@@ -13,6 +13,9 @@ const RegisterPage = () => {
   
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [resendLoading, setResendLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -38,14 +41,23 @@ const RegisterPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
+        // Check for "unverified account" response (202)
+        if (response.status === 202) {
+          setRegisteredEmail(formData.email);
+          setRegistrationSuccess(true);
+          setLoading(false);
+          return;
+        }
         if (response.status === 422 && data.detail) {
-           const validationError = data.detail[0]?.msg || "Invalid input";
-           throw new Error(`Validation Error: ${validationError}`);
+          const validationError = data.detail[0]?.msg || "Invalid input";
+          throw new Error(`Validation Error: ${validationError}`);
         }
         throw new Error(data.detail || 'Failed to register. Please try again.');
       }
 
-      navigate('/login');
+      // Success - store email and show OTP verification page
+      setRegisteredEmail(formData.email);
+      setRegistrationSuccess(true);
 
     } catch (err) {
       setError(err.message);
@@ -53,6 +65,77 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
+
+  const handleResendOTP = async () => {
+    setResendLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/auth/resend-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: registeredEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'Failed to resend OTP');
+      }
+
+      alert('New OTP sent to your email!');
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  // If registration succeeded, show OTP message
+  if (registrationSuccess) {
+    return (
+      <div className="flex-grow flex items-center justify-center bg-gray-50 py-24 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-150px)]">
+        <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-100 text-center">
+          <div className="text-6xl mb-4">📧</div>
+          <h2 className="text-3xl font-anton text-krossover-blue mb-2">Verify Your Email</h2>
+          <p className="text-gray-600 font-poppins mb-4">
+            We sent a 6-digit OTP to <strong className="text-krossover-blue">{registeredEmail}</strong>
+          </p>
+          <p className="text-sm text-gray-500 mb-6">Please check your inbox and spam folder</p>
+          
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-md">
+              <p className="text-sm text-red-700 font-medium">{error}</p>
+            </div>
+          )}
+
+          <Link 
+            to={`/verify-otp?email=${encodeURIComponent(registeredEmail)}`}
+            className="block w-full py-3 px-4 bg-krossover-blue text-white font-bold rounded-md hover:bg-krossover-orange transition duration-300"
+          >
+            Enter OTP
+          </Link>
+          
+          <button 
+            onClick={handleResendOTP}
+            disabled={resendLoading}
+            className={`mt-4 text-sm font-medium ${resendLoading ? 'text-gray-400 cursor-not-allowed' : 'text-krossover-orange hover:underline'}`}
+          >
+            {resendLoading ? 'Sending...' : 'Resend OTP'}
+          </button>
+          
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <Link to="/login" className="text-sm text-gray-600 hover:text-krossover-blue">
+              Back to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-grow flex items-center justify-center bg-gray-50 py-24 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-150px)]">
@@ -160,7 +243,6 @@ const RegisterPage = () => {
           </button>
         </form>
 
-        {/* UPDATED FOOTER WITH OUTLINE BUTTON */}
         <div className="mt-8 text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600 font-poppins mb-4">
             Already have an account?

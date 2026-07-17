@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const LoginPage = () => {
   const navigate = useNavigate();
   
-  const [credentials, setCredentials] = useState({
+  const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
@@ -13,8 +13,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setCredentials({
-      ...credentials,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
     });
   };
@@ -30,21 +30,32 @@ const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Failed to login. Please try again.');
+        // Handle unverified email
+        if (response.status === 403 && data.detail?.includes('verify your email')) {
+          navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
+          return;
+        }
+        
+        // Handle locked account
+        if (response.status === 423) {
+          throw new Error(data.detail || 'Account locked. Try again later.');
+        }
+        
+        throw new Error(data.detail || 'Invalid credentials');
       }
 
-      // Store credentials and notify the Navbar to update
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('userName', data.user_name); 
-      window.dispatchEvent(new Event("auth-change")); 
-
-      navigate('/services');
+      // Store token
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('token_type', data.token_type);
+      
+      // Redirect to dashboard
+      navigate('/');
 
     } catch (err) {
       setError(err.message);
@@ -59,11 +70,11 @@ const LoginPage = () => {
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
         
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-extrabold text-krossover-blue font-anton uppercase tracking-wide">
-            Welcome Back
+          <h2 className="text-4xl text-krossover-blue font-anton uppercase">
+            Login
           </h2>
           <p className="text-gray-500 font-poppins mt-2">
-            Log in to manage your bookings.
+            Welcome back to Krossover Transport
           </p>
         </div>
         
@@ -73,7 +84,8 @@ const LoginPage = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6 font-poppins">
+        <form onSubmit={handleSubmit} className="space-y-5 font-poppins">
+          
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1">
               Email Address
@@ -82,11 +94,11 @@ const LoginPage = () => {
               type="email"
               id="email"
               name="email"
-              value={credentials.email}
+              value={formData.email}
               onChange={handleChange}
               required
               className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-krossover-orange focus:border-transparent transition duration-200"
-              placeholder="adam123@gmail.com"
+              placeholder="johndoe@example.com"
             />
           </div>
 
@@ -98,24 +110,34 @@ const LoginPage = () => {
               type="password"
               id="password"
               name="password"
-              value={credentials.password}
+              value={formData.password}
               onChange={handleChange}
               required
+              minLength="8"
               className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-krossover-orange focus:border-transparent transition duration-200"
               placeholder="••••••••"
             />
           </div>
 
+          <div className="flex items-center justify-end">
+            <Link 
+              to="/forgot-password" 
+              className="text-sm text-krossover-orange hover:underline font-medium"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
           <button 
             type="submit" 
             disabled={loading}
-            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-lg font-bold text-white transition-all duration-300 ${
+            className={`w-full flex justify-center py-3 px-4 mt-2 border border-transparent rounded-md shadow-lg text-lg font-bold text-white transition-all duration-300 ${
               loading 
                 ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-krossover-orange hover:bg-krossover-blue hover:-translate-y-1'
+                : 'bg-krossover-blue hover:bg-krossover-orange hover:-translate-y-1'
             }`}
           >
-            {loading ? 'Authenticating...' : 'Log In'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
@@ -125,9 +147,9 @@ const LoginPage = () => {
           </p>
           <Link 
             to="/register" 
-            className="block w-full py-2.5 px-4 border-2 border-krossover-blue rounded-md shadow-sm text-md font-bold text-krossover-blue bg-white hover:bg-krossover-blue hover:text-white transition-all duration-300"
+            className="block w-full py-2.5 px-4 border-2 border-krossover-orange rounded-md shadow-sm text-md font-bold text-krossover-orange bg-white hover:bg-krossover-orange hover:text-white transition-all duration-300"
           >
-            Register Here
+            Create Account
           </Link>
         </div>
         

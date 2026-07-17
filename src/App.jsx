@@ -1,32 +1,39 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Global Components (persist across all pages)
+// ─── AUTH CONTEXT & PROTECTED ROUTE ─────────────────────
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// ─── GLOBAL COMPONENTS ───────────────────────────────────
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-// Homepage Components
+// ─── HOMEPAGE COMPONENTS ─────────────────────────────────
 import Hero from './components/Hero';
 import AboutSnippet from './components/AboutSnippet';
 import ServicesPreview from './components/ServicesPreview';
 import TestimonialsCarousel from './components/TestimonialsCarousel';
 import CTASection from './components/CTASection';
 
-// New Pages
+// ─── PAGES ───────────────────────────────────────────────
 import AboutPage from './pages/AboutPage';
-import ServicesPage from './pages/ServicesPage'; 
+import ServicesPage from './pages/ServicesPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import BookingPage from './pages/BookingPage';  
-import ConfirmBookingPage from './pages/ConfirmBookingPage';  // New page for confirming bookings
+import VerifyOTPPage from './pages/VerifyOTPPage';           // ← ADD THIS
+import ForgotPasswordPage from './pages/ForgotPasswordPage'; // ← ADD THIS
+import ResetPasswordPage from './pages/ResetPasswordPage';   // ← ADD THIS
+import BookingPage from './pages/BookingPage';
+import ConfirmBookingPage from './pages/ConfirmBookingPage';
 
-// 1. Group current landing page components into a single 'Home' view
+// ─── HOME VIEW ────────────────────────────────────────────
 const Home = () => {
   return (
     <>
       <Hero />
-      <AboutSnippet /> 
-      <ServicesPreview /> 
+      <AboutSnippet />
+      <ServicesPreview />
       <TestimonialsCarousel />
       <CTASection />
     </>
@@ -35,33 +42,55 @@ const Home = () => {
 
 function App() {
   return (
-    // 2. Wrap the entire app in Router
-    <Router>
-      {/* flex & flex-col ensure the footer is always pushed to the bottom if a page is short */}
-      <div className="min-h-screen bg-white flex flex-col">
-        
-        {/* Navbar stays OUTSIDE the Routes so it never unmounts */}
-        <Navbar />
-        
-        {/* 3. The main content area where views will swap out */}
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/bookings" element={<BookingPage />} /> 
-            <Route path="/confirm-booking" element={<ConfirmBookingPage />} />
+    // ─── WRAP ENTIRE APP WITH AuthProvider ──────────────
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-white flex flex-col">
+          <Navbar />
 
-          </Routes>
-        </main>
+          <main className="flex-grow">
+            <Routes>
+              {/* ─── PUBLIC ROUTES (No login required) ─── */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/verify-otp" element={<VerifyOTPPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-        {/* Footer stays OUTSIDE the Routes */}
-        <Footer /> 
-      </div>
-    </Router>
+              {/* ─── PROTECTED ROUTES (Login required) ─── */}
+              <Route
+                path="/services"
+                element={
+                  <ProtectedRoute>
+                    <ServicesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/bookings"
+                element={
+                  <ProtectedRoute>
+                    <BookingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/confirm-booking"
+                element={
+                  <ProtectedRoute>
+                    <ConfirmBookingPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </main>
+
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
