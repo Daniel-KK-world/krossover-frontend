@@ -4,13 +4,13 @@ import ceoImg from '../assets/krossover_ceo.JPG';
 import opsManagerImg from '../assets/krossover_operationsmanager.JPG';
 import fleetManagerImg from '../assets/krossover_fleetmanager.JPG';
 import hrManagerImg from '../assets/krossover_hr.JPG';
+import itManagerImg from '../assets/krossover_itmanager.JPG'; 
 
 export default function TeamGrid() {
   const teamMembers = [
     { 
       name: "Mr. Appau Prince Kwame", 
       role: "CEO", 
-      // 2. Replace the strings with the imported variables
       image: ceoImg 
     },
     { 
@@ -27,6 +27,11 @@ export default function TeamGrid() {
       name: "Erica Lekey Mawunyo", 
       role: "Human Relations Manageress", 
       image: hrManagerImg 
+    },
+    {
+      name: "Mr. Isaac Mensah JY", 
+      role: "Brand and IT manager",
+      image: itManagerImg
     }
   ];
 
@@ -38,8 +43,8 @@ export default function TeamGrid() {
         </h2>
         <div className="w-24 h-1 bg-[#FF914C] mx-auto mb-12"></div>
         
-        {/* Updated grid from md:grid-cols-3 to lg:grid-cols-4 for 4 members */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* 5 columns on large screens - everyone gets equal space */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {teamMembers.map((member, index) => (
             <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
               <div className="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-50 overflow-hidden shadow-inner">
