@@ -4,7 +4,9 @@ import ceoImg from '../assets/krossover_ceo.JPG';
 import opsManagerImg from '../assets/krossover_operationsmanager.JPG';
 import fleetManagerImg from '../assets/krossover_fleetmanager.JPG';
 import hrManagerImg from '../assets/krossover_hr.JPG';
-import itManagerImg from '../assets/krossover_itmanager.JPG'; 
+import itManagerImg from '../assets/krossover_itmanager.JPG';
+import financeManagerImg from '../assets/krossover_financemanager.JPG';
+import customerRelationsImg from '../assets/krossover_customerrelations.JPG';
 
 export default function TeamGrid() {
   const teamMembers = [
@@ -19,19 +21,29 @@ export default function TeamGrid() {
       image: opsManagerImg 
     },
     { 
-      name: "Joshua Ansah", 
-      role: "Fleet Manager", 
-      image: fleetManagerImg 
+      name: "Okyere George Frimpong", 
+      role: "Financial Manager", 
+      image: financeManagerImg 
     },
     { 
-      name: "Erica Lekey Mawunyo", 
-      role: "Human Relations Manageress", 
-      image: hrManagerImg 
+      name: "Joshua Ansah", 
+      role: "Marketing Manager",
+      image: fleetManagerImg
     },
     {
       name: "Mr. Isaac Mensah JY", 
-      role: "Brand and IT manager",
+      role: "Brand and IT Manager",
       image: itManagerImg
+    },
+    { 
+      name: "Michellina Nana Oye Kwabi", 
+      role: "Customer Relations Manager",
+      image: customerRelationsImg 
+    },
+    { 
+      name: "Erica Lekey Mawunyo",
+      role: "HR and Administration Manager", 
+      image: hrManagerImg 
     }
   ];
 
@@ -43,10 +55,13 @@ export default function TeamGrid() {
         </h2>
         <div className="w-24 h-1 bg-[#FF914C] mx-auto mb-12"></div>
         
-        {/* 5 columns on large screens - everyone gets equal space */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        {/* 4 columns - gives us 4 + 3 (centered with auto margins) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
           {teamMembers.map((member, index) => (
-            <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+            <div 
+              key={index} 
+              className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 w-full max-w-xs"
+            >
               <div className="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-50 overflow-hidden shadow-inner">
                 <img src={member.image} alt={member.name} className="w-full h-full object-cover"/>
               </div>
