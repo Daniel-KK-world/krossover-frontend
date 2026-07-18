@@ -8,26 +8,21 @@ const ConfirmBookingPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isAuthenticated } = useAuth();
   
-  // Access the state safely
   const service = location.state?.service;
 
-  // Redirect using useEffect so it doesn't happen during rendering
   useEffect(() => {
     if (!service) {
       navigate('/services');
     }
-    // If not authenticated, redirect to login
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [service, navigate, isAuthenticated]);
 
-  // If service is missing, don't try to render the rest
   if (!service) return null;
 
   const handleConfirm = async () => {
     setIsSubmitting(true);
-    // ✅ FIXED: Use 'access_token' not 'token'
     const token = localStorage.getItem('access_token');
 
     if (!token) {
@@ -37,7 +32,7 @@ const ConfirmBookingPage = () => {
     }
 
     try {
-      // 1. Create the PENDING booking in your DB
+      // ─── CREATE BOOKING ──────────────────────────────────
       const bookingResponse = await fetch('http://localhost:8000/api/v1/bookings/', {
         method: 'POST',
         headers: {
@@ -47,37 +42,47 @@ const ConfirmBookingPage = () => {
         body: JSON.stringify({
           service_id: service.id,
           booking_date: new Date().toISOString(),
+          service_date: new Date().toISOString(),  // ← ADDED
           special_instructions: "Standard booking"
         })
       });
 
-      if (bookingResponse.ok) {
-        const bookingData = await bookingResponse.json();
-        const bookingId = bookingData.id;
+      // ─── CHECK RESPONSE ──────────────────────────────────
+      const bookingData = await bookingResponse.json();
+      console.log('📥 Booking response:', bookingData);
 
-        // 2. IMMEDIATELY call your /initialize/{booking_id} endpoint
-        const paymentResponse = await fetch(`http://localhost:8000/api/v1/payments/initialize/${bookingId}`, {
-          method: 'POST',
-          headers: { 
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (paymentResponse.ok) {
-          const paymentData = await paymentResponse.json();
-          
-          // 3. Redirect the user to the Payment Gateway's URL
-          window.location.href = paymentData.checkout_url; 
+      if (!bookingResponse.ok) {
+        // Show detailed error
+        console.error('❌ Booking failed:', bookingData);
+        
+        // Handle validation errors
+        if (bookingResponse.status === 422) {
+          const errors = bookingData.detail?.map(e => `${e.loc.join('.')}: ${e.msg}`).join('\n');
+          alert(`Validation Error:\n${errors || 'Invalid data'}`);
         } else {
-          console.error("Payment initialization failed");
-          navigate('/bookings');
+          alert(bookingData.detail || 'Booking failed. Please try again.');
         }
+        setIsSubmitting(false);
+        return;
+      }
+
+      const bookingId = bookingData.id;
+
+      // ─── INITIALIZE PAYMENT ──────────────────────────────
+      const paymentResponse = await fetch(`http://localhost:8000/api/v1/bookings/initialize-payment/${bookingId}`, {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (paymentResponse.ok) {
+        const paymentData = await paymentResponse.json();
+        window.location.href = paymentData.checkout_url; 
       } else {
-        const errorData = await bookingResponse.json();
-        console.error("Booking creation failed:", errorData.detail);
-        // Show error to user
-        alert(`Booking failed: ${errorData.detail || 'Please try again'}`);
+        console.error("Payment initialization failed");
+        navigate('/bookings');
       }
     } catch (error) {
       console.error("Booking/Payment flow failed", error);
