@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const ResetPasswordPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/reset-password', {
+      const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

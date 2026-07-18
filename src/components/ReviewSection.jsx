@@ -1,6 +1,7 @@
 // components/ReviewSection.jsx
 import React, { useState, useEffect } from 'react';
 import ReviewModal from './ReviewModal';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ReviewSection = ({ serviceId, serviceName }) => {
   const [reviews, setReviews] = useState([]);
@@ -16,7 +17,7 @@ const ReviewSection = ({ serviceId, serviceName }) => {
   // Fetch reviews
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/reviews/service/${serviceId}`);
+      const response = await fetch(`${API_BASE_URL}/reviews/service/${serviceId}`);
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
@@ -29,7 +30,7 @@ const ReviewSection = ({ serviceId, serviceName }) => {
   // Fetch average rating
   const fetchAverageRating = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/reviews/service/${serviceId}/average`);
+      const response = await fetch(`${API_BASE_URL}/reviews/service/${serviceId}/average`);
       if (response.ok) {
         const data = await response.json();
         setAverageRating(data.average_rating);
@@ -49,7 +50,7 @@ const ReviewSection = ({ serviceId, serviceName }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/bookings/me', {
+      const response = await fetch(`${API_BASE_URL}/bookings/me`, {  // ← FIXED
         headers: {
           'Authorization': `Bearer ${token}`
         }

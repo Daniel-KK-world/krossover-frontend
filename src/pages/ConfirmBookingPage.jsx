@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ConfirmBookingPage = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ const ConfirmBookingPage = () => {
 
     try {
       // ─── CREATE BOOKING ──────────────────────────────────
-      const bookingResponse = await fetch('http://localhost:8000/api/v1/bookings/', {
+      const bookingResponse = await fetch(`${API_BASE_URL}/bookings/`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ const ConfirmBookingPage = () => {
         body: JSON.stringify({
           service_id: service.id,
           booking_date: new Date().toISOString(),
-          service_date: new Date().toISOString(),  // ← ADDED
+          service_date: new Date().toISOString(),
           special_instructions: "Standard booking"
         })
       });
@@ -52,10 +53,8 @@ const ConfirmBookingPage = () => {
       console.log('📥 Booking response:', bookingData);
 
       if (!bookingResponse.ok) {
-        // Show detailed error
         console.error('❌ Booking failed:', bookingData);
         
-        // Handle validation errors
         if (bookingResponse.status === 422) {
           const errors = bookingData.detail?.map(e => `${e.loc.join('.')}: ${e.msg}`).join('\n');
           alert(`Validation Error:\n${errors || 'Invalid data'}`);
@@ -69,7 +68,7 @@ const ConfirmBookingPage = () => {
       const bookingId = bookingData.id;
 
       // ─── INITIALIZE PAYMENT ──────────────────────────────
-      const paymentResponse = await fetch(`http://localhost:8000/api/v1/bookings/initialize-payment/${bookingId}`, {
+      const paymentResponse = await fetch(`${API_BASE_URL}/bookings/initialize-payment/${bookingId}`, {  // ← FIXED
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,

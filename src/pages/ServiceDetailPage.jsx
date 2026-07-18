@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReviewSection from '../components/ReviewSection';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ServiceDetailPage = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const ServiceDetailPage = () => {
   useEffect(() => {
     const fetchService = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/services/${id}`);
+        const response = await fetch(`${API_BASE_URL}/services/${id}`);
         if (!response.ok) {
           throw new Error('Service not found');
         }

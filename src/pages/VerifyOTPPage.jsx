@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const VerifyOTPPage = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const VerifyOTPPage = () => {
     if (emailParam) {
       setEmail(emailParam);
     } else {
-      // If no email in URL, redirect to login
       navigate('/login');
     }
   }, [location, navigate]);
@@ -39,7 +39,7 @@ const VerifyOTPPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/verify-otp', {
+      const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const VerifyOTPPage = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/resend-otp', {
+      const response = await fetch(`${API_BASE_URL}/auth/resend-otp`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ const RegisterPage = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/resend-otp', {
+      const response = await fetch(`${API_BASE_URL}/auth/resend-otp`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

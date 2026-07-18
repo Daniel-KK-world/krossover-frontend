@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const ForgotPasswordPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/auth/forgot-password', {
+      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

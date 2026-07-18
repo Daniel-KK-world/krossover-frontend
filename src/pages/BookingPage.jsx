@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ReviewModal from '../components/ReviewModal';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const BookingPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -12,7 +13,7 @@ const BookingPage = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  const [activeTab, setActiveTab] = useState('bookings'); // 'bookings' or 'reviews'
+  const [activeTab, setActiveTab] = useState('bookings');
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -25,7 +26,7 @@ const BookingPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/bookings/me', {
+      const response = await fetch(`${API_BASE_URL}/bookings/me`, {  // ← FIXED
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const BookingPage = () => {
 
     setLoadingReviews(true);
     try {
-      const response = await fetch('http://localhost:8000/api/v1/reviews/me', {
+      const response = await fetch(`${API_BASE_URL}/reviews/me`, {  // ← FIXED
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -84,7 +85,7 @@ const BookingPage = () => {
     const token = localStorage.getItem('access_token');
     
     try {
-      const paymentResponse = await fetch(`http://localhost:8000/api/v1/payments/initialize/${bookingId}`, {
+      const paymentResponse = await fetch(`${API_BASE_URL}/payments/initialize/${bookingId}`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -106,7 +107,7 @@ const BookingPage = () => {
   // ─── HANDLE REVIEW CLICK ─────────────────────────────────
   const handleWriteReview = async (booking) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/services/${booking.service_id}`);
+      const response = await fetch(`${API_BASE_URL}/services/${booking.service_id}`);
       if (response.ok) {
         const serviceData = await response.json();
         setSelectedService(serviceData);

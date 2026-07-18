@@ -1,5 +1,6 @@
 // components/ReviewModal.jsx
 import React, { useState } from 'react';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ReviewModal = ({ serviceId, serviceName, bookingId, onClose, onSuccess }) => {
   const [rating, setRating] = useState(5);
@@ -7,7 +8,7 @@ const ReviewModal = ({ serviceId, serviceName, bookingId, onClose, onSuccess }) 
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);  // ← ADD THIS
+  const [success, setSuccess] = useState(false);
 
   const token = localStorage.getItem('access_token');
 
@@ -23,7 +24,7 @@ const ReviewModal = ({ serviceId, serviceName, bookingId, onClose, onSuccess }) 
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/reviews/', {
+      const response = await fetch(`${API_BASE_URL}/reviews/`, {  // ← FIXED
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

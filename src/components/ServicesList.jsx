@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';  // ← ADD useNavigate
+import { Link, useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';  // ← ADD THIS
 
 const ServicesList = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();  // ← ADD THIS
+  const navigate = useNavigate();
 
   // 1. Fetch live data from your FastAPI backend
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/v1/services/');
+        const response = await fetch(`${API_BASE_URL}/services/`);  // ← FIXED
         if (!response.ok) throw new Error('Failed to load services from the server.');
         
         const data = await response.json();
@@ -53,8 +54,8 @@ const ServicesList = () => {
           {services.map((service) => (
             <div 
               key={service.id} 
-              onClick={() => handleCardClick(service.id)}  // ← ADD THIS
-              className="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgb(31,98,141,0.12)] transition-all duration-500 group/card border border-gray-100 hover:-translate-y-2 flex flex-col h-full cursor-pointer"  // ← ADD cursor-pointer
+              onClick={() => handleCardClick(service.id)}
+              className="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgb(31,98,141,0.12)] transition-all duration-500 group/card border border-gray-100 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
             >
               {/* Animated Top Gradient Line */}
               <div className="absolute top-0 left-0 h-1.5 w-0 bg-gradient-to-r from-[#FF914C] to-[#1F628D] transition-all duration-700 ease-out group-hover/card:w-full z-20"></div>
@@ -89,7 +90,7 @@ const ServicesList = () => {
                   <Link 
                     to="/confirm-booking"
                     state={{ service: service }}
-                    onClick={(e) => e.stopPropagation()}  // ← ADD THIS to prevent card click
+                    onClick={(e) => e.stopPropagation()}
                     className="group/btn relative w-full inline-flex items-center justify-center gap-3 bg-[#1F628D] text-white text-sm font-extrabold py-3.5 px-6 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-[0_8px_25px_rgba(255,145,76,0.3)] hover:-translate-y-0.5"
                   >
                     {/* Orange wave sweeps up from the bottom */}
