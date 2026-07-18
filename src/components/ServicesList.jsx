@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';  // ← ADD useNavigate
 
 const ServicesList = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();  // ← ADD THIS
 
   // 1. Fetch live data from your FastAPI backend
   useEffect(() => {
@@ -24,6 +25,11 @@ const ServicesList = () => {
 
     fetchServices();
   }, []);
+
+  // Handle card click to go to service detail
+  const handleCardClick = (serviceId) => {
+    navigate(`/services/${serviceId}`);
+  };
 
   return (
     <section className="py-24 px-6 bg-white font-poppins relative">
@@ -47,16 +53,16 @@ const ServicesList = () => {
           {services.map((service) => (
             <div 
               key={service.id} 
-              className="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgb(31,98,141,0.12)] transition-all duration-500 group/card border border-gray-100 hover:-translate-y-2 flex flex-col h-full"
+              onClick={() => handleCardClick(service.id)}  // ← ADD THIS
+              className="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgb(31,98,141,0.12)] transition-all duration-500 group/card border border-gray-100 hover:-translate-y-2 flex flex-col h-full cursor-pointer"  // ← ADD cursor-pointer
             >
-              {/* Animated Top Gradient Line - Shoots across on hover */}
+              {/* Animated Top Gradient Line */}
               <div className="absolute top-0 left-0 h-1.5 w-0 bg-gradient-to-r from-[#FF914C] to-[#1F628D] transition-all duration-700 ease-out group-hover/card:w-full z-20"></div>
 
               {/* Service Image with Cinematic Tint */}
               <div className="h-56 overflow-hidden relative bg-gray-200">
                 <div className="absolute inset-0 bg-[#1F628D]/20 mix-blend-multiply group-hover/card:bg-transparent transition-colors duration-500 z-10"></div>
                 <img 
-                  // Fallback to a default image if the database image_url is empty
                   src={service.image_url || "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2071&auto=format&fit=crop"} 
                   alt={service.name} 
                   className="w-full h-full object-cover transform scale-100 group-hover/card:scale-110 transition-transform duration-700 ease-in-out"
@@ -67,7 +73,7 @@ const ServicesList = () => {
               <div className="p-8 flex flex-col flex-grow bg-white relative z-10">
                 <div className="flex justify-between items-start mb-3">
                   <h4 className="text-2xl font-extrabold font-anton text-[#1F628D] uppercase group-hover/card:text-[#FF914C] transition-colors duration-300">
-                    {service.name} {/* Mapped from backend 'name' */}
+                    {service.name}
                   </h4>
                   <span className="text-sm font-bold text-[#FF914C] bg-orange-50 px-2 py-1 rounded">
                     GHS {service.base_price}
@@ -75,7 +81,7 @@ const ServicesList = () => {
                 </div>
                 
                 <p className="text-gray-600 mb-8 text-sm leading-relaxed flex-grow">
-                  {service.description} {/* Mapped from backend 'description' */}
+                  {service.description}
                 </p>
                 
                 {/* High-End Direct Booking Button Flow */}
@@ -83,6 +89,7 @@ const ServicesList = () => {
                   <Link 
                     to="/confirm-booking"
                     state={{ service: service }}
+                    onClick={(e) => e.stopPropagation()}  // ← ADD THIS to prevent card click
                     className="group/btn relative w-full inline-flex items-center justify-center gap-3 bg-[#1F628D] text-white text-sm font-extrabold py-3.5 px-6 rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-[0_8px_25px_rgba(255,145,76,0.3)] hover:-translate-y-0.5"
                   >
                     {/* Orange wave sweeps up from the bottom */}
@@ -114,4 +121,4 @@ const ServicesList = () => {
   );
 };
  
-export default ServicesList;  
+export default ServicesList;

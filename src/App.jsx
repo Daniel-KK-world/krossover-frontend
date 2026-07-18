@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import AboutSnippet from './components/AboutSnippet';
 import ServicesPreview from './components/ServicesPreview';
+import ServiceDetailPage from './pages/ServiceDetailPage'; 
 import TestimonialsCarousel from './components/TestimonialsCarousel';
 import CTASection from './components/CTASection';
 
@@ -67,6 +68,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route 
+               path="/services/:id" 
+               element={
+                <ProtectedRoute>
+                 <ServiceDetailPage />
+                </ProtectedRoute>
+               }
+              />
+
               <Route
                 path="/bookings"
                 element={
