@@ -49,7 +49,7 @@ const CTASection = () => {
             
             {/* Secondary Action: Direct WhatsApp */}
             <a 
-              href="https://wa.me/233548237732" 
+              href="https://wa.me/233552320210" 
               target="_blank" 
               rel="noreferrer" 
               className="group/btn2 relative overflow-hidden bg-[#25D366] text-white font-extrabold py-4 px-8 rounded shadow-lg transition-all duration-300 flex items-center justify-center gap-2 flex-1"
