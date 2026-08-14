@@ -1,17 +1,21 @@
 // components/Navbar.jsx
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { services } from '../data/services'; // ← IMPORT services data
 import logoImg from '../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { isAuthenticated, logout, user } = useAuth();  // ← Added user
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false); // ← NEW
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleServicesDropdown = () => setServicesDropdownOpen(!servicesDropdownOpen);
 
   const handleLogout = () => {
     logout();
@@ -46,9 +50,61 @@ const Navbar = () => {
           <ul className="flex space-x-8 text-gray-700 font-semibold text-sm">
             <li><Link to="/" className="hover:text-krossover-orange">Home</Link></li>
             <li><Link to="/about" className="hover:text-krossover-orange">About Us</Link></li>
-            <li><Link to="/services" className="hover:text-krossover-orange">Our Services</Link></li>
+            
+            {/* ─── SERVICES DROPDOWN ─── */}
+            <li 
+              className="relative"
+              onMouseEnter={() => setServicesDropdownOpen(true)}
+              onMouseLeave={() => setServicesDropdownOpen(false)}
+            >
+              <button 
+                className="flex items-center gap-1 hover:text-krossover-orange transition-colors"
+              >
+                Our Services
+                <svg 
+                  className={`w-4 h-4 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {servicesDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
+                  <div className="px-3 py-2 border-b border-gray-100">
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">All Services</p>
+                  </div>
+                  {services.map((service) => (
+                    <Link
+                      key={service.id}
+                      to={`/services/${service.slug}`}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                      onClick={() => setServicesDropdownOpen(false)}
+                    >
+                      <span className="text-2xl">{service.icon}</span>
+                      <div>
+                        <div className="font-bold text-[#1F628D] text-sm">{service.name}</div>
+                        <div className="text-gray-500 text-xs">{service.shortDescription.substring(0, 40)}...</div>
+                      </div>
+                    </Link>
+                  ))}
+                  <div className="border-t border-gray-100 mt-1 pt-1">
+                    <Link
+                      to="/services"
+                      className="block px-4 py-2 text-sm text-[#FF914C] font-bold hover:bg-gray-50 transition-colors"
+                      onClick={() => setServicesDropdownOpen(false)}
+                    >
+                      View All Services →
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </li>
+
             <li>
-              {/* ✅ REMOVED manual auth check - let ProtectedRoute handle it */}
               <Link to="/bookings" className="hover:text-krossover-orange">
                 My Bookings
               </Link>
@@ -65,7 +121,7 @@ const Navbar = () => {
                   {getInitials()}
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* User Dropdown Menu */}
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2">
                     <div className="px-4 py-2 border-b border-gray-100">
@@ -133,7 +189,7 @@ const Navbar = () => {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* ─── MOBILE MENU ─── */}
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100">
           <ul className="flex flex-col text-gray-700 font-semibold">
@@ -147,13 +203,50 @@ const Navbar = () => {
                 About Us
               </Link>
             </li>
+            
+            {/* ─── MOBILE SERVICES DROPDOWN ─── */}
             <li className="border-b border-gray-50">
-              <Link to="/services" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
-                Our Services
-              </Link>
+              <button
+                onClick={toggleServicesDropdown}
+                className="flex items-center justify-between w-full px-8 py-4 hover:bg-gray-50"
+              >
+                <span>Our Services</span>
+                <svg 
+                  className={`w-4 h-4 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* Mobile Services Submenu */}
+              {servicesDropdownOpen && (
+                <div className="bg-gray-50">
+                  {services.map((service) => (
+                    <Link
+                      key={service.id}
+                      to={`/services/${service.slug}`}
+                      className="flex items-center gap-3 px-8 py-3 hover:bg-gray-100 transition-colors border-b border-gray-100"
+                      onClick={toggleMenu}
+                    >
+                      <span className="text-xl">{service.icon}</span>
+                      <span className="text-sm">{service.name}</span>
+                    </Link>
+                  ))}
+                  <Link
+                    to="/services"
+                    className="block px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
+                    onClick={toggleMenu}
+                  >
+                    View All Services →
+                  </Link>
+                </div>
+              )}
             </li>
+
             <li className="border-b border-gray-50">
-              {/* ✅ REMOVED manual auth check - let ProtectedRoute handle it */}
               <Link 
                 to="/bookings" 
                 onClick={toggleMenu}

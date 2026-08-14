@@ -1,6 +1,8 @@
+// src/components/Footer.jsx
+
 import React from 'react';
-// 1. Import Link from react-router-dom
 import { Link } from 'react-router-dom';
+import { services } from '../data/services'; // ← IMPORT the services data
 
 const Footer = () => {
   return (
@@ -21,28 +23,33 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Column 2: Quick Links - Updated to use React Router <Link> */}
+        {/* Column 2: Quick Links */}
         <div>
           <h3 className="font-anton text-xl mb-4 text-[#FF914C] tracking-wide">QUICK LINKS</h3>
           <ul className="space-y-3 text-sm text-gray-200">
             <li><Link to="/" className="hover:text-white hover:underline transition">Home</Link></li>
             <li><Link to="/about" className="hover:text-white hover:underline transition">About Us</Link></li>
             <li><Link to="/services" className="hover:text-white hover:underline transition">Explore Fleet & Services</Link></li>
-            <li><Link to="/book" className="hover:text-white hover:underline transition">Book a Service</Link></li>
-            <li><Link to="/auth" className="hover:text-white hover:underline transition">Client Portal Login</Link></li>
+            <li><Link to="/booking" className="hover:text-white hover:underline transition">Book a Service</Link></li>
+            <li><Link to="/login" className="hover:text-white hover:underline transition">Client Portal Login</Link></li>
           </ul>
         </div>
 
-        {/* Column 3: Our Services */}
+        {/* Column 3: Our Services - NOW WITH CLICKABLE LINKS */}
         <div>
           <h3 className="font-anton text-xl mb-4 text-[#FF914C] tracking-wide">OUR SERVICES</h3>
           <ul className="space-y-3 text-sm text-gray-200">
-            <li>Bus Hiring Transport Services</li>
-            <li>Driving School & Licensing Assistance</li>
-            <li>Delivery Services</li>
-            <li>Travel & Tour Management</li>
-            <li>Mechanics & Maintenance</li>
-            <li>Vehicle Towing Services</li>
+            {services.map((service) => (
+              <li key={service.id}>
+                <Link 
+                  to={`/services/${service.slug}`}
+                  className="hover:text-white hover:underline transition flex items-center gap-2"
+                >
+                  <span className="text-[#FF914C]">{service.icon}</span>
+                  {service.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -71,7 +78,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-blue-800 flex flex-col md:flex-row items-center justify-between text-xs text-gray-300">
         <p>&copy; {new Date().getFullYear()} Krossover Transport Agency. All Rights Reserved.</p>
         
-        {/* Social Media Placeholders - Kept as standard <a> tags because they are external links */}
+        {/* Social Media Links */}
         <div className="flex gap-4 mt-4 md:mt-0">
           <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">Facebook</a>
           <a href="#" className="hover:text-[#FF914C] transition" target="_blank" rel="noopener noreferrer">Instagram</a>
