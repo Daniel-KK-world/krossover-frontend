@@ -1,5 +1,7 @@
-import React from 'react';
+// src/components/ServicesPreview.jsx
 
+import React from 'react';
+import { Link } from 'react-router-dom'; // ← CHANGE: Import Link instead of using <a>
 
 import busHiringImg from '../assets/bus_hiring.JPG';
 import drivingSchoolImg from '../assets/driving_school.JPG';
@@ -9,40 +11,46 @@ import maintenanceImg from '../assets/maintenance.JPG';
 import towingImg from '../assets/towing.JPG';
 
 const ServicesPreview = () => {
-  // 2. Replace the hardcoded strings with your imported variables
+  // ADDED: slug to each service for routing
   const services = [
     {
       id: 1,
+      slug: 'bus-hiring', // ← ADDED
       title: "Bus Hiring Services",
       description: "Premium and reliable buses for corporate events, private trips, and commercial transport.",
       image: busHiringImg,
     },
     {
       id: 2,
+      slug: 'driving-school', // ← ADDED
       title: "Driving School",
       description: "Train with seasoned professionals. We also assist with license acquisition and renewals.",
       image: drivingSchoolImg,
     },
     {
       id: 3,
+      slug: 'delivery', // ← ADDED
       title: "Delivery Services",
       description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
       image: deliveryImg,
     },
     {
       id: 4,
+      slug: 'travel-tour', // ← ADDED
       title: "Travel & Tour",
       description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
       image: travelTourImg,
     },
     {
       id: 5,
+      slug: 'maintenance', // ← ADDED
       title: "Mechanics & Maintenance",
       description: "Expert vehicle diagnostics, routine maintenance, and full-scale mechanical repairs.",
       image: maintenanceImg,
     },
     {
       id: 6,
+      slug: 'towing', // ← ADDED
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
       image: towingImg,
@@ -103,9 +111,9 @@ const ServicesPreview = () => {
                   {service.description}
                 </p>
                 
-                {/* Action Link with sliding arrow */}
-                <a 
-                  href="/services" 
+                {/* CHANGE: Action Link with sliding arrow - Now uses Link to go to dedicated page */}
+                <Link 
+                  to={`/services/${service.slug}`} // ← CHANGED: from href="/services"
                   className="inline-flex items-center text-[#FF914C] font-extrabold hover:text-[#1F628D] transition-colors mt-auto w-fit"
                 >
                   <span className="relative">
@@ -116,16 +124,16 @@ const ServicesPreview = () => {
                   <svg className="ml-2 w-5 h-5 transform translate-x-0 group-hover/card:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Global Action Button with Sweep Effect */}
+        {/* Global Action Button with Sweep Effect - Now uses Link */}
         <div className="text-center mt-16">
-          <a 
-            href="/services" 
+          <Link 
+            to="/services" // ← CHANGED: from href="/services"
             className="group/btn relative inline-flex items-center justify-center gap-3 border-2 border-[#1F628D] text-[#1F628D] text-lg font-extrabold py-3 px-10 rounded overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(31,98,141,0.2)]"
           >
             {/* Background Fill Sweep */}
@@ -134,7 +142,7 @@ const ServicesPreview = () => {
             <span className="relative z-10 transition-colors duration-300 group-hover/btn:text-white">
               View All Services
             </span>
-          </a>
+          </Link>
         </div>
 
       </div>

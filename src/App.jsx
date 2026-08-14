@@ -1,3 +1,5 @@
+// src/App.js
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -25,7 +27,7 @@ import LoginPage from './pages/LoginPage';
 import VerifyOTPPage from './pages/VerifyOTPPage';          
 import ForgotPasswordPage from './pages/ForgotPasswordPage'; 
 import ResetPasswordPage from './pages/ResetPasswordPage';  
-import BookingPage from './pages/BookingPage';  // ← NOW CORRECT
+import BookingPage from './pages/BookingPage';
 import ConfirmBookingPage from './pages/ConfirmBookingPage';
 
 // ─── HOME VIEW ────────────────────────────────────────────
@@ -59,25 +61,13 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-              {/* ─── PROTECTED ROUTES ─── */}
-              <Route
-                path="/services"
-                element={
-                  <ProtectedRoute>
-                    <ServicesPage />
-                  </ProtectedRoute>
-                }
-              />
+              {/* ─── SERVICES ROUTES (PUBLIC) ─── */}
+              <Route path="/services" element={<ServicesPage />} />
+              
+              {/* NEW: Dedicated service page with slug */}
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
 
-              <Route 
-               path="/services/:id" 
-               element={
-                <ProtectedRoute>
-                 <ServiceDetailPage />
-                </ProtectedRoute>
-               }
-              />
-
+              {/* ─── PROTECTED ROUTES (BOOKING ONLY) ─── */}
               <Route
                 path="/bookings"
                 element={

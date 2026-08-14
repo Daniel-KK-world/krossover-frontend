@@ -1,16 +1,41 @@
-# React + Vite
+Client Meeting Notes – Transport Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+General Requirements
 
-Currently, two official plugins are available:
+- Users should _not be required to log in or register_ to view the company's services.
+- Visitors should be able to browse all available services freely.
+  DONE!!!!!!!!!!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Services
 
-## React Compiler
+- Display all transport services on the Services page.
+- Each service should be clickable and lead to its own _Service Details (Explore) page_.
+- Every Service Details page should include:
+  - A detailed description of the service.
+  - Relevant images.
+  - A _Book Now_ button/link that takes users to the booking page for that specific service.
+    DONE!!!!!
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Navigation
 
-## Expanding the ESLint configuration
+- Update the _Services_ menu item in the navigation bar to include a _dropdown menu_ listing all available services.
+- Users should be able to access any service directly from the dropdown without first visiting the main Services page.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Footer
+
+- Add links to each individual service in the footer for quick access.
+
+Content & Media
+
+- Improve the quality and relevance of the images used throughout the website.
+- Request additional documents/content from the client to provide more detailed information about each service.
+
+Action Items
+
+1. Remove the login/registration requirement for viewing services.
+2. Create individual Service Details pages.
+3. Add booking links/buttons to each service page.
+4. Implement a Services dropdown in the navigation bar.
+5. Add service links to the footer.
+6. Replace or improve service images.
+7. Obtain supporting documents/content from the client for service descriptions.
