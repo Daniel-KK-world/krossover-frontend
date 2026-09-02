@@ -1,17 +1,25 @@
 // components/Navbar.jsx
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { services } from '../data/services'; // ← IMPORT services data
+import { services } from '../data/services';
 import logoImg from '../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false); // ← NEW
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get main categories only (Bus Hiring, Car Rental, Truck Rental)
+  const mainServices = services.filter(s => 
+    s.slug === 'bus-hiring' || 
+    s.slug === 'car-rental' || 
+    s.slug === 'truck-rental'
+  );
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -26,6 +34,10 @@ const Navbar = () => {
   const getInitials = () => {
     const name = user?.name || localStorage.getItem('userName') || 'User';
     return name.charAt(0).toUpperCase();
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
@@ -47,18 +59,32 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden lg:flex items-center space-x-10">
-          <ul className="flex space-x-8 text-gray-700 font-semibold text-sm">
-            <li><Link to="/" className="hover:text-krossover-orange">Home</Link></li>
-            <li><Link to="/about" className="hover:text-krossover-orange">About Us</Link></li>
+          <ul className="flex space-x-8 text-gray-700 font-semibold text-sm items-center">
+            <li>
+              <Link 
+                to="/" 
+                className={`hover:text-krossover-orange transition-colors ${isActive('/') ? 'text-krossover-orange' : ''}`}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/about" 
+                className={`hover:text-krossover-orange transition-colors ${isActive('/about') ? 'text-krossover-orange' : ''}`}
+              >
+                About Us
+              </Link>
+            </li>
             
-            {/* ─── SERVICES DROPDOWN ─── */}
+            {/* ─── SERVICES DROPDOWN - MAIN CATEGORIES ONLY ─── */}
             <li 
               className="relative"
               onMouseEnter={() => setServicesDropdownOpen(true)}
               onMouseLeave={() => setServicesDropdownOpen(false)}
             >
               <button 
-                className="flex items-center gap-1 hover:text-krossover-orange transition-colors"
+                className={`flex items-center gap-1 hover:text-krossover-orange transition-colors py-2 ${location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}`}
               >
                 Our Services
                 <svg 
@@ -71,13 +97,13 @@ const Navbar = () => {
                 </svg>
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu - Only main categories */}
               {servicesDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
+                <div className="absolute left-0 top-full pt-1 w-64 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
                   <div className="px-3 py-2 border-b border-gray-100">
-                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">All Services</p>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Main Services</p>
                   </div>
-                  {services.map((service) => (
+                  {mainServices.map((service) => (
                     <Link
                       key={service.id}
                       to={`/services/${service.slug}`}
@@ -93,20 +119,24 @@ const Navbar = () => {
                   ))}
                   <div className="border-t border-gray-100 mt-1 pt-1">
                     <Link
-                      to="/services"
-                      className="block px-4 py-2 text-sm text-[#FF914C] font-bold hover:bg-gray-50 transition-colors"
+                      to="/all-cars"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-[#FF914C] font-bold hover:bg-gray-50 transition-colors"
                       onClick={() => setServicesDropdownOpen(false)}
                     >
-                      View All Services →
+                      <span>🚗</span> View All Our Cars →
                     </Link>
                   </div>
                 </div>
               )}
             </li>
 
+            {/* ─── ALL OUR CARS BUTTON ─── */}
             <li>
-              <Link to="/bookings" className="hover:text-krossover-orange">
-                My Bookings
+              <Link 
+                to="/all-cars" 
+                className={`hover:text-krossover-orange transition-colors ${isActive('/all-cars') ? 'text-krossover-orange' : ''}`}
+              >
+                All Our Cars
               </Link>
             </li>
           </ul>
@@ -121,7 +151,6 @@ const Navbar = () => {
                   {getInitials()}
                 </button>
 
-                {/* User Dropdown Menu */}
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2">
                     <div className="px-4 py-2 border-b border-gray-100">
@@ -139,14 +168,6 @@ const Navbar = () => {
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
                       🔒 Change Password
-                    </Link>
-
-                    <Link
-                      to="/bookings"
-                      onClick={() => setDropdownOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      📋 My Bookings
                     </Link>
 
                     <hr className="my-1 border-gray-100" />
@@ -194,12 +215,20 @@ const Navbar = () => {
         <div className="lg:hidden bg-white border-t border-gray-100">
           <ul className="flex flex-col text-gray-700 font-semibold">
             <li className="border-b border-gray-50">
-              <Link to="/" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+              <Link 
+                to="/" 
+                onClick={toggleMenu} 
+                className={`block px-8 py-4 hover:bg-gray-50 ${isActive('/') ? 'text-krossover-orange' : ''}`}
+              >
                 Home
               </Link>
             </li>
             <li className="border-b border-gray-50">
-              <Link to="/about" onClick={toggleMenu} className="block px-8 py-4 hover:bg-gray-50">
+              <Link 
+                to="/about" 
+                onClick={toggleMenu} 
+                className={`block px-8 py-4 hover:bg-gray-50 ${isActive('/about') ? 'text-krossover-orange' : ''}`}
+              >
                 About Us
               </Link>
             </li>
@@ -210,7 +239,7 @@ const Navbar = () => {
                 onClick={toggleServicesDropdown}
                 className="flex items-center justify-between w-full px-8 py-4 hover:bg-gray-50"
               >
-                <span>Our Services</span>
+                <span className={location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}>Our Services</span>
                 <svg 
                   className={`w-4 h-4 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
                   fill="none" 
@@ -221,10 +250,9 @@ const Navbar = () => {
                 </svg>
               </button>
               
-              {/* Mobile Services Submenu */}
               {servicesDropdownOpen && (
                 <div className="bg-gray-50">
-                  {services.map((service) => (
+                  {mainServices.map((service) => (
                     <Link
                       key={service.id}
                       to={`/services/${service.slug}`}
@@ -236,11 +264,11 @@ const Navbar = () => {
                     </Link>
                   ))}
                   <Link
-                    to="/services"
-                    className="block px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
+                    to="/all-cars"
+                    className="flex items-center gap-2 px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
                     onClick={toggleMenu}
                   >
-                    View All Services →
+                    🚗 View All Our Cars →
                   </Link>
                 </div>
               )}
@@ -248,11 +276,11 @@ const Navbar = () => {
 
             <li className="border-b border-gray-50">
               <Link 
-                to="/bookings" 
-                onClick={toggleMenu}
-                className="block px-8 py-4 hover:bg-gray-50"
+                to="/all-cars" 
+                onClick={toggleMenu} 
+                className={`block px-8 py-4 hover:bg-gray-50 ${isActive('/all-cars') ? 'text-krossover-orange' : ''}`}
               >
-                My Bookings
+                All Our Cars
               </Link>
             </li>
 

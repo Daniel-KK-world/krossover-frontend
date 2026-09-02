@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 // ─── GLOBAL COMPONENTS ───────────────────────────────────
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop'; 
 
 // ─── HOMEPAGE COMPONENTS ─────────────────────────────────
 import Hero from './components/Hero';
@@ -29,6 +30,8 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';  
 import BookingPage from './pages/BookingPage';
 import ConfirmBookingPage from './pages/ConfirmBookingPage';
+import EnquiryPage from './pages/EnquiryPage';
+import AllCarsPage from './pages/AllCarsPage';
 
 // ─── HOME VIEW ────────────────────────────────────────────
 const Home = () => {
@@ -49,6 +52,8 @@ function App() {
       <Router>
         <div className="min-h-screen bg-white flex flex-col">
           <Navbar />
+          
+          <ScrollToTop /> {/* ← ADD THIS - Scrolls to top on page change */}
 
           <main className="flex-grow">
             <Routes>
@@ -60,12 +65,14 @@ function App() {
               <Route path="/verify-otp" element={<VerifyOTPPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/all-cars" element={<AllCarsPage />} />
 
               {/* ─── SERVICES ROUTES (PUBLIC) ─── */}
               <Route path="/services" element={<ServicesPage />} />
-              
-              {/* NEW: Dedicated service page with slug */}
               <Route path="/services/:slug" element={<ServiceDetailPage />} />
+
+              {/* ─── ENQUIRY FORM (PUBLIC) ─── */}
+              <Route path="/enquiry" element={<EnquiryPage />} />
 
               {/* ─── PROTECTED ROUTES (BOOKING ONLY) ─── */}
               <Route
