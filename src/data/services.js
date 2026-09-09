@@ -7,7 +7,19 @@ import travelTourImg from '../assets/travel_and_tour.JPG';
 import maintenanceImg from '../assets/maintenance.JPG';
 import towingImg from '../assets/towing.JPG';
 
-// Placeholder for new categories (swap with real images later)
+// ─── NEW CAR IMAGES ──────────────────────────────────────
+import ayaloloImg from '../assets/cars/ayalolobus.JPG';
+import kiaTruckImg from '../assets/cars/kiatruck.JPG';
+import metroMassImg from '../assets/cars/metromassbus.JPG';
+import nissanFrontierImg from '../assets/cars/nissanfrontier.JPG';
+import saloonCarsImg from '../assets/cars/salooncars.JPG';
+import sprinterBusImg from '../assets/cars/sprinterbus.JPG';
+import toyotaCoasterImg from "../assets/cars/toyatacostal.JPG";
+import toyotaLandCruiserImg from '../assets/cars/toyotalandcruiser.JPG';
+import toyotaVoxyImg from '../assets/cars/toyotavoxy.JPG';
+import vipBusImg from '../assets/cars/vipbus.JPG';
+
+// Placeholder for categories that don't have specific images yet
 import carRentalImg from '../assets/bus_hiring.JPG';
 import truckRentalImg from '../assets/bus_hiring.JPG';
 
@@ -37,49 +49,49 @@ Whether you're planning a corporate event, a private trip, or need commercial tr
         capacity: '25 – 30 Passengers',
         price: 'From GHS 1,300',
         description: 'Ideal for corporate, church, weddings, tours, school trips.',
-        image: busHiringImg,
+        image: toyotaCoasterImg, // ← Toyota Coaster
       },
       {
         name: 'Ayalolo Bus',
         capacity: '45 Seats + 30 Standing',
         price: 'From GHS 2,300',
         description: 'Ideal for corporate, church, weddings, tours, school trips.',
-        image: busHiringImg,
+        image: ayaloloImg, // ← Ayalolo Bus
       },
       {
         name: 'Metro-Mass Bus',
         capacity: '45 - 60 Passengers',
         price: 'From GHS 2,500',
         description: 'Ideal for corporate, church, weddings, tours, school trips.',
-        image: busHiringImg,
+        image: metroMassImg, // ← Metro Mass Bus
       },
       {
         name: 'VIP Bus',
         capacity: '45 - 60 Passengers',
         price: 'From GHS 2,800',
         description: 'Ideal for corporate, church, weddings, tours, school trips.',
-        image: busHiringImg,
+        image: vipBusImg, // ← VIP Bus
       },
       {
         name: 'Toyota Hiace Mini-Bus',
         capacity: '13 - 14 Passengers',
         price: 'From GHS 1,200',
         description: 'Ideal for corporate, church, weddings, tours, school trips.',
-        image: busHiringImg,
+        image: busHiringImg, // ← Still need Hiace image (use placeholder)
       },
       {
         name: 'Sprinter Mini-Bus',
         capacity: '20 - 25 Passengers',
         price: 'From GHS 600',
         description: 'Ideal for church, weddings, excursions, school trips.',
-        image: busHiringImg,
+        image: sprinterBusImg, // ← Sprinter Bus
       },
     ],
     gallery: [busHiringImg, busHiringImg, busHiringImg],
   },
 
   // ============================================================
-  // 2. CAR RENTAL SERVICES - VOXY + SALOON GO HERE
+  // 2. CAR RENTAL SERVICES - VOXY + SALOON + LAND CRUISER
   // ============================================================
   {
     id: 7,
@@ -102,21 +114,28 @@ Whether you're planning a corporate event, a private trip, or need commercial tr
         capacity: '6 - 8 Passengers',
         price: 'From GHS 800',
         description: 'Ideal for executive trips, airport transfers, tours.',
-        image: carRentalImg,
+        image: toyotaVoxyImg, // ← Toyota Voxy
+      },
+      {
+        name: 'Toyota Land Cruiser',
+        capacity: '5 - 7 Passengers',
+        price: 'From GHS 1,200',
+        description: 'Ideal for executive trips, off-road, airport transfers.',
+        image: toyotaLandCruiserImg, // ← Toyota Land Cruiser
       },
       {
         name: 'Saloon Cars',
         capacity: '4 - 6 Passengers',
         price: 'From GHS 1,000',
         description: 'Ideal for executive trips, airport transfers.',
-        image: carRentalImg,
+        image: saloonCarsImg, // ← Saloon Cars
       },
     ],
     gallery: [carRentalImg, carRentalImg],
   },
 
   // ============================================================
-  // 3. TRUCK RENTAL SERVICES - KIA TRUCK + PICKUP GO HERE
+  // 3. TRUCK RENTAL SERVICES - KIA TRUCK + NISSAN FRONTIER
   // ============================================================
   {
     id: 8,
@@ -139,14 +158,14 @@ Whether you're planning a corporate event, a private trip, or need commercial tr
         capacity: '1 - 2 Passengers',
         price: 'From GHS 500',
         description: 'Ideal for load or items pickups.',
-        image: truckRentalImg,
+        image: kiaTruckImg, // ← Kia Truck
       },
       {
-        name: 'Pickup Truck',
+        name: 'Nissan Frontier Pickup',
         capacity: '3 - 4 Passengers',
         price: 'From GHS 800',
         description: 'For transporting bulky materials and loads.',
-        image: truckRentalImg,
+        image: nissanFrontierImg, // ← Nissan Frontier
       },
     ],
     gallery: [truckRentalImg, truckRentalImg],
