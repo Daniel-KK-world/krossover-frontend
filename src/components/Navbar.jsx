@@ -123,20 +123,20 @@ const Navbar = () => {
                       className="flex items-center gap-2 px-4 py-2 text-sm text-[#FF914C] font-bold hover:bg-gray-50 transition-colors"
                       onClick={() => setServicesDropdownOpen(false)}
                     >
-                      <span>🚗</span> View All Our Cars →
+                      <span>🚗</span> Explore Our Fleet →
                     </Link>
                   </div>
                 </div>
               )}
             </li>
 
-            {/* ─── ALL OUR CARS BUTTON ─── */}
+            {/* ─── FLEET BUTTON ─── */}
             <li>
               <Link 
                 to="/all-cars" 
                 className={`hover:text-krossover-orange transition-colors ${isActive('/all-cars') ? 'text-krossover-orange' : ''}`}
               >
-                All Our Cars
+                Our Fleet
               </Link>
             </li>
           </ul>
@@ -268,7 +268,7 @@ const Navbar = () => {
                     className="flex items-center gap-2 px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
                     onClick={toggleMenu}
                   >
-                    🚗 View All Our Cars →
+                    🚗 Explore Our Fleet →
                   </Link>
                 </div>
               )}
@@ -280,7 +280,7 @@ const Navbar = () => {
                 onClick={toggleMenu} 
                 className={`block px-8 py-4 hover:bg-gray-50 ${isActive('/all-cars') ? 'text-krossover-orange' : ''}`}
               >
-                All Our Cars
+                Our Fleet
               </Link>
             </li>
 
