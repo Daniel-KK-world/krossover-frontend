@@ -2,9 +2,16 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { services } from '../data/services'; // ← IMPORT the services data
 
 const Footer = () => {
+  // Transport categories the customer wants shown in footer
+  const transportCategories = [
+    { name: 'Buses & Group Transport', icon: '🚌', slug: 'bus-hiring' },
+    { name: 'Executive & Minibus Transport', icon: '🚐', slug: 'car-rental' },
+    { name: 'Utility & Field Transport', icon: '🛻', slug: 'truck-rental' },
+    { name: 'Executive Vehicles', icon: '🚗', slug: 'car-rental' },
+  ];
+
   return (
     <footer className="bg-[#1F628D] text-white pt-16 pb-8 font-poppins mt-auto">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -30,23 +37,24 @@ const Footer = () => {
             <li><Link to="/" className="hover:text-white hover:underline transition">Home</Link></li>
             <li><Link to="/about" className="hover:text-white hover:underline transition">About Us</Link></li>
             <li><Link to="/services" className="hover:text-white hover:underline transition">Explore Fleet & Services</Link></li>
-            <li><Link to="/booking" className="hover:text-white hover:underline transition">Book a Service</Link></li>
+            <li><Link to="/all-cars" className="hover:text-white hover:underline transition">Our Fleet</Link></li>
+            <li><Link to="/enquiry" className="hover:text-white hover:underline transition">Book a Service</Link></li>
             <li><Link to="/login" className="hover:text-white hover:underline transition">Client Portal Login</Link></li>
           </ul>
         </div>
 
-        {/* Column 3: Our Services - NOW WITH CLICKABLE LINKS */}
+        {/* Column 3: Our Services - 4 Transport Categories Only */}
         <div>
           <h3 className="font-anton text-xl mb-4 text-[#FF914C] tracking-wide">OUR SERVICES</h3>
           <ul className="space-y-3 text-sm text-gray-200">
-            {services.map((service) => (
-              <li key={service.id}>
+            {transportCategories.map((cat, idx) => (
+              <li key={idx}>
                 <Link 
-                  to={`/services/${service.slug}`}
+                  to={`/services/${cat.slug}`}
                   className="hover:text-white hover:underline transition flex items-center gap-2"
                 >
-                  <span className="text-[#FF914C]">{service.icon}</span>
-                  {service.name}
+                  <span className="text-[#FF914C]">{cat.icon}</span>
+                  {cat.name}
                 </Link>
               </li>
             ))}

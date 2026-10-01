@@ -91,47 +91,75 @@ Whether you're planning a corporate event, a private trip, or need commercial tr
   },
 
   // ============================================================
-  // 2. CAR RENTAL SERVICES - VOXY + SALOON + LAND CRUISER
+  // 2. KROSSOVER DRIVER DEVELOPMENT ACADEMY
   // ============================================================
   {
-    id: 7,
-    slug: 'car-rental',
-    name: 'Car Rental Services',
-    icon: '🚗',
-    shortDescription: 'Premium car rental for executive travel, airport transfers, and group movements.',
-    image: carRentalImg,
-    heroImage: carRentalImg,
-    fullDescription: `Our Car Rental Services offer premium vehicles for executive travel, airport transfers, and group transport.`,
+    id: 2,
+    slug: 'driving-school',
+    name: 'Krossover Driver Development Academy',
+    icon: '🎓',
+    shortDescription: 'Learn to drive | Learn to drive safely | Become a professional driver.',
+    image: drivingSchoolImg,
+    heroImage: drivingSchoolImg,
+    fullDescription: `The Krossover Driver Development Academy is not just a driving school — it's a complete driver development pathway.
+
+We don't just teach people how to drive. We develop responsible, safe, and professional drivers — from first-time learners to executive chauffeurs and corporate fleet drivers.
+
+Our programmes are aligned with DVLA requirements and cover the full journey:
+Training → Certification → Employment/Placement → Professional Driver Services.
+
+Why Krossover:
+• DVLA-aligned curriculum
+• Certified instructors
+• Structured training records
+• Professional driver certification levels
+• Career pathway from learner to executive chauffeur`,
     features: [
-      'Professional drivers',
-      'Well-maintained vehicles',
-      'Flexible hire periods',
-      'Executive travel'
+      'DVLA-aligned training',
+      'Certified instructors',
+      'Theory and practical lessons',
+      'Defensive driving expertise',
+      'Professional certification',
+      'Driver placement support'
     ],
     fleet: [
       {
-        name: 'Toyota Voxy',
-        capacity: '6 - 8 Passengers',
-        price: 'From GHS 800',
-        description: 'Ideal for executive trips, airport transfers, tours.',
-        image: toyotaVoxyImg, // ← Toyota Voxy
+        name: 'Learner Driver Programme',
+        capacity: '5 weeks / 3 months license',
+        price: 'From GHS 1,800',
+        description: 'Beginner course for first-time drivers, university students, and professionals preparing for DVLA licensing. Includes theory, practical driving, urban & highway driving, and mock assessment.',
+        image: drivingSchoolImg,
       },
       {
-        name: 'Toyota Land Cruiser',
-        capacity: '5 - 7 Passengers',
-        price: 'From GHS 1,200',
-        description: 'Ideal for executive trips, off-road, airport transfers.',
-        image: toyotaLandCruiserImg, // ← Toyota Land Cruiser
+        name: 'Defensive Driving Academy',
+        capacity: '1 - 2 days + assessment',
+        price: 'From GHS 1,500',
+        description: 'Advanced safety training for corporate, personal, NGO, church, and fleet drivers. Covers hazard perception, emergency response, and defensive driving techniques.',
+        image: drivingSchoolImg,
       },
       {
-        name: 'Saloon Cars',
-        capacity: '4 - 6 Passengers',
-        price: 'From GHS 1,000',
-        description: 'Ideal for executive trips, airport transfers.',
-        image: saloonCarsImg, // ← Saloon Cars
+        name: 'Professional Driver Development',
+        capacity: '5 - 7 weeks',
+        price: 'From GHS 3,500',
+        description: 'Train to become a professional chauffeur or corporate driver. Covers driving competence, professional behaviour, customer service, vehicle management, and emergency response.',
+        image: drivingSchoolImg,
+      },
+      {
+        name: 'Executive / VIP Chauffeur Programme',
+        capacity: 'Premium one-on-one',
+        price: 'From GHS 3,500',
+        description: 'Our premium programme for CEOs, diplomats, executives, expatriates, and high-net-worth families. Includes executive etiquette, VIP airport protocol, security awareness, and chauffeur presentation.',
+        image: drivingSchoolImg,
+      },
+      {
+        name: 'Corporate Driver Training',
+        capacity: '10 - 20 drivers per cohort',
+        price: 'From GHS 5,500',
+        description: 'On-site B2B training for company drivers. 2-day programme covering defensive driving, road safety, driver attitude, vehicle inspection, customer service, and corporate ethics.',
+        image: drivingSchoolImg,
       },
     ],
-    gallery: [carRentalImg, carRentalImg],
+    gallery: [drivingSchoolImg, drivingSchoolImg],
   },
 
   // ============================================================

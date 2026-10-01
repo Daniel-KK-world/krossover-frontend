@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { services } from '../data/services';
 import logoImg from '../assets/logo.png';
 
 const Navbar = () => {
@@ -14,12 +13,29 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get main categories only (Bus Hiring, Car Rental, Truck Rental)
-  const mainServices = services.filter(s => 
-    s.slug === 'bus-hiring' || 
-    s.slug === 'car-rental' || 
-    s.slug === 'truck-rental'
-  );
+  // ─── TRANSPORT CATEGORIES (each maps to an existing service page) ───
+  const transportCategories = [
+    {
+      name: 'Buses & Group Transport',
+      icon: '🚌',
+      slug: 'bus-hiring', // ← existing route
+    },
+    {
+      name: 'Executive & Minibus Transport',
+      icon: '🚐',
+      slug: 'car-rental', // ← existing route
+    },
+    {
+      name: 'Utility & Field Transport',
+      icon: '🛻',
+      slug: 'truck-rental', // ← existing route
+    },
+    {
+      name: 'Executive Vehicles',
+      icon: '🚗',
+      slug: 'car-rental', // ← existing route (shared with above for now)
+    },
+  ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -77,7 +93,7 @@ const Navbar = () => {
               </Link>
             </li>
             
-            {/* ─── SERVICES DROPDOWN - MAIN CATEGORIES ONLY ─── */}
+            {/* ─── SERVICES DROPDOWN ─── */}
             <li 
               className="relative"
               onMouseEnter={() => setServicesDropdownOpen(true)}
@@ -97,26 +113,25 @@ const Navbar = () => {
                 </svg>
               </button>
 
-              {/* Dropdown Menu - Only main categories */}
               {servicesDropdownOpen && (
-                <div className="absolute left-0 top-full pt-1 w-64 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
+                <div className="absolute left-0 top-full pt-1 w-72 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
+                  
                   <div className="px-3 py-2 border-b border-gray-100">
-                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Main Services</p>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Transport Services</p>
                   </div>
-                  {mainServices.map((service) => (
+
+                  {transportCategories.map((cat, idx) => (
                     <Link
-                      key={service.id}
-                      to={`/services/${service.slug}`}
+                      key={idx}
+                      to={`/services/${cat.slug}`}
                       className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                       onClick={() => setServicesDropdownOpen(false)}
                     >
-                      <span className="text-2xl">{service.icon}</span>
-                      <div>
-                        <div className="font-bold text-[#1F628D] text-sm">{service.name}</div>
-                        <div className="text-gray-500 text-xs">{service.shortDescription.substring(0, 40)}...</div>
-                      </div>
+                      <span className="text-2xl">{cat.icon}</span>
+                      <div className="font-bold text-[#1F628D] text-sm">{cat.name}</div>
                     </Link>
                   ))}
+
                   <div className="border-t border-gray-100 mt-1 pt-1">
                     <Link
                       to="/all-cars"
@@ -252,17 +267,18 @@ const Navbar = () => {
               
               {servicesDropdownOpen && (
                 <div className="bg-gray-50">
-                  {mainServices.map((service) => (
+                  {transportCategories.map((cat, idx) => (
                     <Link
-                      key={service.id}
-                      to={`/services/${service.slug}`}
+                      key={idx}
+                      to={`/services/${cat.slug}`}
                       className="flex items-center gap-3 px-8 py-3 hover:bg-gray-100 transition-colors border-b border-gray-100"
                       onClick={toggleMenu}
                     >
-                      <span className="text-xl">{service.icon}</span>
-                      <span className="text-sm">{service.name}</span>
+                      <span className="text-xl">{cat.icon}</span>
+                      <span className="text-sm">{cat.name}</span>
                     </Link>
                   ))}
+
                   <Link
                     to="/all-cars"
                     className="flex items-center gap-2 px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
