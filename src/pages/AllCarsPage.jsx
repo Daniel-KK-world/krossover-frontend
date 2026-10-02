@@ -7,9 +7,28 @@ import { services } from '../data/services';
 const AllCarsPage = () => {
   const navigate = useNavigate();
 
-  // Flatten all vehicles from all services
+  // Only these services have VEHICLES (not courses or services)
+  const VEHICLE_SERVICES = ['bus-hiring', 'car-rental', 'truck-rental'];
+
   const allVehicles = [];
   services.forEach(service => {
+    if (!VEHICLE_SERVICES.includes(service.slug)) return;
+
+    if (service.fleetGroups && service.fleetGroups.length > 0) {
+      service.fleetGroups.forEach(group => {
+        group.vehicles.forEach(vehicle => {
+          allVehicles.push({
+            ...vehicle,
+            serviceName: service.name,
+            serviceSlug: service.slug,
+            serviceIcon: service.icon,
+            groupName: group.groupName,
+            groupIcon: group.groupIcon,
+          });
+        });
+      });
+    }
+
     if (service.fleet && service.fleet.length > 0) {
       service.fleet.forEach(vehicle => {
         allVehicles.push({
@@ -17,13 +36,14 @@ const AllCarsPage = () => {
           serviceName: service.name,
           serviceSlug: service.slug,
           serviceIcon: service.icon,
+          groupName: service.name,
+          groupIcon: service.icon,
         });
       });
     }
   });
 
   const handleEnquire = (vehicle) => {
-    // Find the parent service
     const parentService = services.find(s => s.slug === vehicle.serviceSlug);
     navigate('/enquiry', { state: { service: parentService, vehicle } });
   };
@@ -31,27 +51,23 @@ const AllCarsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6 font-poppins">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-anton text-[#1F628D] uppercase">All Our Cars</h1>
+          <h1 className="text-4xl md:text-5xl font-anton text-[#1F628D] uppercase">Our Fleet</h1>
           <p className="text-gray-600 mt-2">Browse our complete fleet of vehicles across all services</p>
         </div>
 
-        {/* Stats */}
         <div className="bg-white rounded-xl p-4 shadow-sm mb-8">
           <p className="text-center text-sm text-gray-600">
             Total Vehicles: <span className="font-bold text-[#1F628D]">{allVehicles.length}</span>
           </p>
         </div>
 
-        {/* Vehicles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allVehicles.map((vehicle, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
+              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-100 flex flex-col"
             >
-              {/* Image */}
               <div className="h-48 bg-gray-100">
                 <img
                   src={vehicle.image || '/placeholder-car.jpg'}
@@ -60,14 +76,13 @@ const AllCarsPage = () => {
                 />
               </div>
 
-              {/* Content */}
-              <div className="p-5">
+              <div className="p-5 flex flex-col flex-grow">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h3 className="text-lg font-bold text-[#1F628D]">{vehicle.name}</h3>
                     <p className="text-xs text-gray-500 flex items-center gap-1">
-                      <span>{vehicle.serviceIcon}</span>
-                      {vehicle.serviceName}
+                      <span>{vehicle.groupIcon}</span>
+                      {vehicle.groupName}
                     </p>
                   </div>
                   <span className="text-sm font-bold text-[#FF914C] bg-orange-50 px-2 py-1 rounded-full whitespace-nowrap">
@@ -75,36 +90,14 @@ const AllCarsPage = () => {
                   </span>
                 </div>
 
-                <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                <p className="text-gray-600 text-sm mt-2 flex-grow">
                   {vehicle.description}
                 </p>
 
-                <div className="grid grid-cols-2 gap-1 mt-3 text-xs">
-                  <p><span className="font-semibold">Capacity:</span> {vehicle.capacity}</p>
-                  {vehicle.category && (
-                    <p><span className="font-semibold">Category:</span> {vehicle.category}</p>
-                  )}
-                  {vehicle.location && (
-                    <p className="col-span-2"><span className="font-semibold">Location:</span> {vehicle.location}</p>
-                  )}
+                <div className="mt-3 text-xs">
+                  <span className="font-semibold">Capacity: </span>
+                  <span className="text-gray-600">{vehicle.capacity}</span>
                 </div>
-
-                {/* What's Included - Short version */}
-                {vehicle.includes && vehicle.includes.length > 0 && (
-                  <div className="mt-3 bg-gray-50 rounded-lg p-2">
-                    <p className="text-xs text-gray-500 font-medium">Includes:</p>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {vehicle.includes.slice(0, 3).map((item, idx) => (
-                        <span key={idx} className="text-xs bg-white px-2 py-0.5 rounded-full text-gray-600">
-                          ✓ {item.split('-')[0].trim()}
-                        </span>
-                      ))}
-                      {vehicle.includes.length > 3 && (
-                        <span className="text-xs text-gray-400">+{vehicle.includes.length - 3} more</span>
-                      )}
-                    </div>
-                  </div>
-                )}
 
                 <button
                   onClick={() => handleEnquire(vehicle)}
@@ -117,7 +110,6 @@ const AllCarsPage = () => {
           ))}
         </div>
 
-        {/* Empty State */}
         {allVehicles.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500">No vehicles found.</p>

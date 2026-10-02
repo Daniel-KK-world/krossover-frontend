@@ -1,7 +1,7 @@
 // src/components/ServicesPreview.jsx
 
 import React from 'react';
-import { Link } from 'react-router-dom'; // ← CHANGE: Import Link instead of using <a>
+import { Link } from 'react-router-dom';
 
 import busHiringImg from '../assets/bus_hiring.JPG';
 import drivingSchoolImg from '../assets/driving_school.JPG';
@@ -11,60 +11,66 @@ import maintenanceImg from '../assets/maintenance.JPG';
 import towingImg from '../assets/towing.JPG';
 
 const ServicesPreview = () => {
-  // ADDED: slug to each service for routing
+  // ✅ LIVE services first, then COMING SOON
   const services = [
     {
       id: 1,
-      slug: 'bus-hiring', // ← ADDED
+      slug: 'bus-hiring',
       title: "Bus Hiring Services",
-      description: "Premium and reliable buses for corporate events, private trips, and commercial transport.",
+      description: "Premium and reliable buses, minibuses, trucks, and executive vehicles for every need.",
       image: busHiringImg,
+      status: 'live',
     },
     {
       id: 2,
-      slug: 'driving-school', // ← ADDED
-      title: "Driving School",
-      description: "Train with seasoned professionals. We also assist with license acquisition and renewals.",
-      image: drivingSchoolImg,
-    },
-    {
-      id: 3,
-      slug: 'delivery', // ← ADDED
-      title: "Delivery Services",
-      description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
-      image: deliveryImg,
-    },
-    {
-      id: 4,
-      slug: 'travel-tour', // ← ADDED
-      title: "Travel & Tour",
-      description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
-      image: travelTourImg,
-    },
-    {
-      id: 5,
-      slug: 'maintenance', // ← ADDED
+      slug: 'maintenance',
       title: "Mechanics & Maintenance",
       description: "Expert vehicle diagnostics, routine maintenance, and full-scale mechanical repairs.",
       image: maintenanceImg,
+      status: 'live',
+    },
+    {
+      id: 3,
+      slug: 'driving-school',
+      title: "Driver Development Academy",
+      description: "Learn to drive | Learn to drive safely | Become a professional driver.",
+      image: drivingSchoolImg,
+
+      status: 'coming-soon',
+    },
+    {
+      id: 4,
+      slug: 'delivery',
+      title: "Delivery Services",
+      description: "Fast, secure, and efficient logistics and delivery solutions across the nation.",
+      image: deliveryImg,
+      status: 'coming-soon',
+    },
+    {
+      id: 5,
+      slug: 'travel-tour',
+      title: "Travel & Tour",
+      description: "Comprehensive travel management, ticketing, and tour consultancy across the globe.",
+      image: travelTourImg,
+      status: 'coming-soon',
     },
     {
       id: 6,
-      slug: 'towing', // ← ADDED
+      slug: 'towing',
       title: "Towing Services",
       description: "24/7 rapid response vehicle towing and roadside assistance when you need it most.",
       image: towingImg,
+      status: 'coming-soon',
     }
   ];
 
   return (
     <section className="py-24 px-6 bg-gray-50 font-poppins relative">
-      {/* Subtle background decoration */}
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-white to-transparent pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Section Header - Wrapped in a group for subtle hover interactions */}
+        {/* Section Header */}
         <div className="text-center mb-16 group/header cursor-default">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-10 h-1 bg-[#FF914C] transition-all duration-500 group-hover/header:w-16"></div>
@@ -88,18 +94,25 @@ const ServicesPreview = () => {
               key={service.id} 
               className="relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgb(31,98,141,0.12)] transition-all duration-500 group/card border border-gray-100 hover:-translate-y-2 flex flex-col h-full"
             >
-              {/* Animated Top Gradient Line - Shoots across on hover */}
+              {/* Animated Top Gradient Line */}
               <div className="absolute top-0 left-0 h-1.5 w-0 bg-gradient-to-r from-[#FF914C] to-[#1F628D] transition-all duration-700 ease-out group-hover/card:w-full z-20"></div>
 
               {/* Service Image */}
               <div className="h-56 overflow-hidden relative">
-                {/* Cinematic Tint Overlay - Fades out on hover */}
+                {/* Cinematic Tint Overlay */}
                 <div className="absolute inset-0 bg-[#1F628D]/20 mix-blend-multiply group-hover/card:bg-transparent transition-colors duration-500 z-10"></div>
                 <img 
                   src={service.image} 
                   alt={service.title} 
                   className="w-full h-full object-cover transform scale-100 group-hover/card:scale-110 transition-transform duration-700 ease-in-out"
                 />
+                
+                {/* ─── COMING SOON BADGE ─── */}
+                {service.status === 'coming-soon' && (
+                  <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full z-20 shadow-md">
+                    COMING SOON
+                  </div>
+                )}
               </div>
 
               {/* Service Content */}
@@ -111,14 +124,13 @@ const ServicesPreview = () => {
                   {service.description}
                 </p>
                 
-                {/* CHANGE: Action Link with sliding arrow - Now uses Link to go to dedicated page */}
+                {/* Action Link */}
                 <Link 
-                  to={`/services/${service.slug}`} // ← CHANGED: from href="/services"
+                  to={`/services/${service.slug}`}
                   className="inline-flex items-center text-[#FF914C] font-extrabold hover:text-[#1F628D] transition-colors mt-auto w-fit"
                 >
                   <span className="relative">
-                    Explore Details
-                    {/* Animated Underline */}
+                    {service.status === 'coming-soon' ? 'Learn More' : 'Explore Details'}
                     <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#1F628D] transition-all duration-300 group-hover/card:w-full"></span>
                   </span>
                   <svg className="ml-2 w-5 h-5 transform translate-x-0 group-hover/card:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,15 +142,13 @@ const ServicesPreview = () => {
           ))}
         </div>
 
-        {/* Global Action Button with Sweep Effect - Now uses Link */}
+        {/* Global Action Button */}
         <div className="text-center mt-16">
           <Link 
-            to="/services" // ← CHANGED: from href="/services"
+            to="/services"
             className="group/btn relative inline-flex items-center justify-center gap-3 border-2 border-[#1F628D] text-[#1F628D] text-lg font-extrabold py-3 px-10 rounded overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(31,98,141,0.2)]"
           >
-            {/* Background Fill Sweep */}
             <div className="absolute inset-0 bg-[#1F628D] translate-y-[100%] transition-transform duration-300 ease-in-out group-hover/btn:translate-y-0 z-0"></div>
-            
             <span className="relative z-10 transition-colors duration-300 group-hover/btn:text-white">
               View All Services
             </span>
