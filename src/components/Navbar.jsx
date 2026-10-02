@@ -8,38 +8,12 @@ import logoImg from '../assets/logo.png';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ─── TRANSPORT CATEGORIES (each maps to an existing service page) ───
-  const transportCategories = [
-    {
-      name: 'Buses & Group Transport',
-      icon: '🚌',
-      slug: 'bus-hiring', // ← existing route
-    },
-    {
-      name: 'Executive & Minibus Transport',
-      icon: '🚐',
-      slug: 'car-rental', // ← existing route
-    },
-    {
-      name: 'Utility & Field Transport',
-      icon: '🛻',
-      slug: 'truck-rental', // ← existing route
-    },
-    {
-      name: 'Executive Vehicles',
-      icon: '🚗',
-      slug: 'car-rental', // ← existing route (shared with above for now)
-    },
-  ];
-
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const toggleServicesDropdown = () => setServicesDropdownOpen(!servicesDropdownOpen);
 
   const handleLogout = () => {
     logout();
@@ -92,60 +66,14 @@ const Navbar = () => {
                 About Us
               </Link>
             </li>
-            
-            {/* ─── SERVICES DROPDOWN ─── */}
-            <li 
-              className="relative"
-              onMouseEnter={() => setServicesDropdownOpen(true)}
-              onMouseLeave={() => setServicesDropdownOpen(false)}
-            >
-              <button 
-                className={`flex items-center gap-1 hover:text-krossover-orange transition-colors py-2 ${location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}`}
+            <li>
+              <Link 
+                to="/services" 
+                className={`hover:text-krossover-orange transition-colors ${location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}`}
               >
                 Our Services
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {servicesDropdownOpen && (
-                <div className="absolute left-0 top-full pt-1 w-72 bg-white rounded-xl shadow-xl py-2 border border-gray-100 z-50">
-                  
-                  <div className="px-3 py-2 border-b border-gray-100">
-                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Transport Services</p>
-                  </div>
-
-                  {transportCategories.map((cat, idx) => (
-                    <Link
-                      key={idx}
-                      to={`/services/${cat.slug}`}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
-                      onClick={() => setServicesDropdownOpen(false)}
-                    >
-                      <span className="text-2xl">{cat.icon}</span>
-                      <div className="font-bold text-[#1F628D] text-sm">{cat.name}</div>
-                    </Link>
-                  ))}
-
-                  <div className="border-t border-gray-100 mt-1 pt-1">
-                    <Link
-                      to="/all-cars"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-[#FF914C] font-bold hover:bg-gray-50 transition-colors"
-                      onClick={() => setServicesDropdownOpen(false)}
-                    >
-                      <span>🚗</span> Explore Our Fleet →
-                    </Link>
-                  </div>
-                </div>
-              )}
+              </Link>
             </li>
-
-            {/* ─── FLEET BUTTON ─── */}
             <li>
               <Link 
                 to="/all-cars" 
@@ -247,49 +175,15 @@ const Navbar = () => {
                 About Us
               </Link>
             </li>
-            
-            {/* ─── MOBILE SERVICES DROPDOWN ─── */}
             <li className="border-b border-gray-50">
-              <button
-                onClick={toggleServicesDropdown}
-                className="flex items-center justify-between w-full px-8 py-4 hover:bg-gray-50"
+              <Link 
+                to="/services" 
+                onClick={toggleMenu} 
+                className={`block px-8 py-4 hover:bg-gray-50 ${location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}`}
               >
-                <span className={location.pathname.startsWith('/services') ? 'text-krossover-orange' : ''}>Our Services</span>
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              
-              {servicesDropdownOpen && (
-                <div className="bg-gray-50">
-                  {transportCategories.map((cat, idx) => (
-                    <Link
-                      key={idx}
-                      to={`/services/${cat.slug}`}
-                      className="flex items-center gap-3 px-8 py-3 hover:bg-gray-100 transition-colors border-b border-gray-100"
-                      onClick={toggleMenu}
-                    >
-                      <span className="text-xl">{cat.icon}</span>
-                      <span className="text-sm">{cat.name}</span>
-                    </Link>
-                  ))}
-
-                  <Link
-                    to="/all-cars"
-                    className="flex items-center gap-2 px-8 py-3 text-[#FF914C] font-bold hover:bg-gray-100 transition-colors"
-                    onClick={toggleMenu}
-                  >
-                    🚗 Explore Our Fleet →
-                  </Link>
-                </div>
-              )}
+                Our Services
+              </Link>
             </li>
-
             <li className="border-b border-gray-50">
               <Link 
                 to="/all-cars" 
